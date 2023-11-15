@@ -52,8 +52,8 @@ Load all posts
   <tr>
     <th>Week</th>
     <th>Code, Code, Code</th>
-    <th>Tools and DevOps</th>
-    <th>Collaboration</th>
+    <th>Planning</th>
+    <th>Tangibles</th>
   </tr>
 
   {%comment%} 
@@ -70,8 +70,8 @@ Load all posts
 
   {% for index in (start..end) -%}
     {% assign ccc = null | compact %}
-    {% assign devops = null | compact %}
-    {% assign collab = null | compact %}
+    {% assign plan = null | compact %}
+    {% assign tangibles = null | compact %}
     {% assign uk = null | compact %}
 
   {%comment%} 
@@ -98,12 +98,12 @@ Load all posts
           {% if post.type == "ccc" %}
               {% assign ccc = ccc | unshift: title %}
               {% assign ccc = ccc | unshift: url %}  
-          {% elsif post.type == "devops" %}
-              {% assign devops = devops | unshift: title %}
-              {% assign devops = devops | unshift: url %} 
-          {% elsif post.type == "collab" %}
-              {% assign collab = collab | unshift: title %}
-              {% assign collab = collab | unshift: url %} 
+          {% elsif post.type == "plan" %}
+              {% assign plan = plan | unshift: title %}
+              {% assign plan = plan | unshift: url %} 
+          {% elsif post.type == "tangibles" %}
+              {% assign tangibles = tangibles | unshift: title %}
+              {% assign tangibles = tangibles | unshift: url %} 
           {% else %}
               {% assign uk = uk | unshift: title %}
               {% assign uk = uk | unshift: url %}     
@@ -116,7 +116,7 @@ Load all posts
   {%comment%} 
   <!-- ordering units and inserting column delimiters -->
   {%endcomment%}
-  {% assign units = units | concat:ccc | concat:deli | concat:devops | concat:deli | concat:collab %}
+  {% assign units = units | concat:ccc | concat:deli | concat:plan | concat:deli | concat:tangibles %}
 
   {%comment%} 
   <!-- Forever Loop with base condition break processes units and build html for each type-->
