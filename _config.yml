@@ -1,9 +1,9 @@
-title: Nighthawk-Pages
-description: "August 2023 to June 2024"
-owner_name: Tay Kim
-github_username: TayKimmy
-github_repo: "CSA-Portfolio-2.0"
-baseurl: "/CSA-Portfolio-2.0"
+title: Team TEE
+description: "Official Frontend Repository for Team TEE!"
+owner_name: Team TEE
+github_username: TEE-CSA
+github_repo: "TEE-Ideation"
+baseurl: "/TEE-CSA"
 remote_theme: jekyll/minima
 # remote_theme: pages-themes/dinky@v0.2.0
 # remote_theme: pages-themes/minimal@v0.2.0
