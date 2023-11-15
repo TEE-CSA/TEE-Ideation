@@ -3,7 +3,7 @@ description: "Official Frontend Repository for Team TEE!"
 owner_name: Team TEE
 github_username: TEE-CSA
 github_repo: "TEE-Ideation"
-baseurl: "/TEE-CSA"
+baseurl: "/TEE-Ideation"
 remote_theme: jekyll/minima
 
 # remote_theme: pages-themes/dinky@v0.2.0
