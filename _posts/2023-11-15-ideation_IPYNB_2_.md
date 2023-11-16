@@ -2,7 +2,7 @@
 title: Mini-Project Ideation and Planning
 description: Blog about plans
 type: plan
-courses: {'csa': {'week 1'}}
+courses: {'csa': {'week 1': None}}
 ---
 
 # Our Idea 
