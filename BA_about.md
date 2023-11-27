@@ -4,6 +4,4 @@ title: About Me
 permalink: /about/
 ---
 
-A Fastpages clone, for CSA - Tirth Thakkar & Haseeb Beg
-
-
+Frontend website for Team TEE in CSA Tri 2 - Tay, Ethan T., Emaad
