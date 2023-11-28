@@ -11,6 +11,7 @@
             text-align: right;
             color: white;
         }
+
         #track {
             
             position: relative;
@@ -51,8 +52,8 @@
             height: 400px; 
             width: 50px;
             background-color: rgb(241, 35, 35);
-            position: absolute;
-            right: 0; 
+            position: relative;
+            left: 100%; 
             display: flex;
             align-items: center;
             justify-content: center;
@@ -68,6 +69,7 @@
         
 
         #startButton, #resetButton {
+            display: inline-block;
             padding: 10px;
             font-size: 16px;
             cursor: pointer;
@@ -86,6 +88,25 @@
         #speedForm input {
             width: 50px;
             margin-bottom: 10px;
+        }
+
+        #lengthForm {
+            margin-top: 20px;
+            margin-bottom: 20px
+        }
+
+        #lengthForm label {
+            font-size: 25px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        #lengthForm input {
+            width: 200px;
+            margin-bottom: 10px;
+            background-color: black;
+            color: white;
+            padding: 5px;
         }
     </style>
 </head>
@@ -124,6 +145,11 @@
         <label for="speed4">Speed for Car 4:</label>
         <input type="number" id="speed4" min="1" value="1">
     </form>
+
+    <form id="lengthForm"><center>
+        <label for="length">Length of Fibonacci Numbers</label>
+        <input type="number" id="length" min="1" value="1">
+    </center></form>
 
     <button id="startButton" onclick="startFibonacciRace()">Start Fibonacci Race</button>
     <button id="resetButton" onclick="resetRace()">Reset Race</button>
