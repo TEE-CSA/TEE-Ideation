@@ -6,3 +6,7 @@ permalink: /sorting/
 
 
 {% include sorting.html %}
+
+<script>
+    
+</script>
