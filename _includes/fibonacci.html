@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
@@ -13,7 +14,6 @@
         }
 
         #track {
-            
             position: relative;
             height: 400px;
             width: 130%;
@@ -28,7 +28,7 @@
             width: 175px;
             height: 70px;
             margin: auto;
-            transition: transform 4s linear; /* Increased the duration for a slower race */
+            transition: transform 4s linear;
         }
 
         .lane, .lane1 {
@@ -49,7 +49,7 @@
         }
 
         .finish {
-            height: 400px; 
+            height: 400px;
             width: 50px;
             background-color: rgb(241, 35, 35);
             position: relative;
@@ -66,7 +66,6 @@
             font-size: 28px;
             transform: rotate(180deg);
         }
-        
 
         #startButton, #resetButton {
             display: inline-block;
@@ -113,19 +112,23 @@
 <body>
     <h1 class="text">User Score: 0</h1>
     <h1 class="text">Amount Bet: 0</h1>
-    
+
     <div id="track">
         <div class="lane">
-            <img class="race-car1" src="{{site.baseurl}}/images/car1-removebg-preview.png" alt="Car 1">
+            <span class="car-label" id="carLabel1">Merge Sort</span>
+            <img class="race-car1" src="https://github.com/TEE-CSA/TEEBackend/assets/109186517/0fe7001f-0d2e-40fc-bdd1-9b82373862f5" alt="Car 1">
         </div>
         <div class="lane" style="top: 25%;">
-            <img class="race-car2" src="{{site.baseurl}}/images/car2-removebg-preview.png" alt="Car 2">
+            <span class="car-label" id="carLabel2">Insertion Sort</span>
+            <img class="race-car2" src="https://github.com/TEE-CSA/TEEBackend/assets/109186517/6d9bc8e3-8c8e-4854-8194-0b5fdacad24b" alt="Car 2">
         </div>
         <div class="lane" style="top: 50%;">
-            <img class="race-car3" src="{{site.baseurl}}/images/car3-removebg-preview.png" alt="Car 3">
+            <span class="car-label" id="carLabel3">Bubble Sort</span>
+            <img class="race-car3" src="https://github.com/TEE-CSA/TEEBackend/assets/109186517/3976c85c-ae57-43a0-9331-1e10bf51d29f" alt="Car 3">
         </div>
         <div class="lane1" style="top: 75%">
-            <img class="race-car4" src="{{site.baseurl}}/images/car4-removebg-preview.png" alt="Car 4">
+            <span class="car-label" id="carLabel4">Selection Sort</span>
+            <img class="race-car4" src="https://github.com/TEE-CSA/TEEBackend/assets/109186517/7ad3a783-5957-4979-81c0-33619a9b4ef4" alt="Car 4">
         </div>
         <div class="finish">
             <span class="finish-text">Finish</span>
@@ -155,44 +158,40 @@
     <button id="resetButton" onclick="resetRace()">Reset Race</button>
 
     <script>
-        function startFibonacciRace() {
-            // user input for car speeds
-            const speed1 = parseFloat(document.getElementById('speed1').value);
-            const speed2 = parseFloat(document.getElementById('speed2').value);
-            const speed3 = parseFloat(document.getElementById('speed3').value);
-            const speed4 = parseFloat(document.getElementById('speed4').value);
+        // asynchronous function to start the Fibonacci race
+        async function startFibonacciRace() {
+            // fetch sort speeds from the provided API endpoint
+            const response = await fetch('http://localhost:8085/api/sort/speeds');
+            const speeds = await response.json();
+    
+            // create an array of sort algorithms with their corresponding speeds
+            const sortAlgorithms = [
+                { algorithm: 'mergeSort', speed: speeds.mergeSort },
+                { algorithm: 'insertionSort', speed: speeds.insertionSort },
+                { algorithm: 'bubbleSort', speed: speeds.bubbleSort },
+                { algorithm: 'selectionSort', speed: speeds.selectionSort },
+            ];
+            
 
-            // initial car position
-            document.querySelector('.race-car1').style.transform = `translateX(0)`;
-            document.querySelector('.race-car2').style.transform = `translateX(0)`;
-            document.querySelector('.race-car3').style.transform = `translateX(0)`;
-            document.querySelector('.race-car4').style.transform = `translateX(0)`;
-
-            // start animation
-            setTimeout(() => {
-                document.querySelector('.race-car1').style.transform = `translateX(1300%)`;
-            }, 100 * (1 / speed1));
-
-            setTimeout(() => {
-                document.querySelector('.race-car2').style.transform = `translateX(1300%)`;
-            }, 100 * (1 / speed2));
-
-            setTimeout(() => {
-                document.querySelector('.race-car3').style.transform = `translateX(1300%)`;
-            }, 100 * (1 / speed3));
-
-            setTimeout(() => {
-                document.querySelector('.race-car4').style.transform = `translateX(1300%)`;
-            }, 100 * (1 / speed4));
+            // move race cars to the finish line with timing based on their speeds
+            sortAlgorithms.forEach((algorithm, index) => {
+                const carSelector = `.race-car${index + 1}`;
+                setTimeout(() => {
+                    document.querySelector(carSelector).style.transform = `translateX(850%)`;
+                }, 100 * (1 / algorithm.speed));
+            });
         }
-
+    
+        // reset race 
         function resetRace() {
-            // reset car position
+          
             document.querySelector('.race-car1').style.transform = `translateX(0)`;
             document.querySelector('.race-car2').style.transform = `translateX(0)`;
             document.querySelector('.race-car3').style.transform = `translateX(0)`;
             document.querySelector('.race-car4').style.transform = `translateX(0)`;
         }
     </script>
+    
+    
 </body>
 </html>
