@@ -11,13 +11,40 @@
             text-align: right;
             color: white;
         }
+        #track {
+            position: relative;
+            height: 150px;
+            background-color: #ddd;
+            margin-bottom: 20px;
+        }
 
+        .race-car {
+            position: absolute;
+            bottom: 0;
+            width: 40px;
+            height: 20px;
+            background-color: #3498db;
+        }
+
+        #startButton {
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <h1 class="text">User Score: 0</h1>
     <h1 class="text">Amount Bet: 0</h1>
+    <div id="track"></div>
+        <img class="race-car" src="https://github.com/TEE-CSA/TEE-Frontend/assets/107821010/04c4d726-699a-4186-ba26-eb418093f79c" alt="Car 1">
+        <img class="race-car" src="https://github.com/TEE-CSA/TEE-Frontend/assets/107821010/a4328a23-c6a7-4adb-9144-aad78d9179a5" alt="Car 2">
+        <img class="race-car" src="https://github.com/TEE-CSA/TEE-Frontend/assets/107821010/105ca4cf-0a23-44e9-a7d7-2a6bb19a372b" alt="Car 3">
+        <img class="race-car" src="https://github.com/TEE-CSA/TEE-Frontend/assets/107821010/bec3a4d6-18fc-4625-8752-594f65bdfe6d" alt="Car 4">
+    </div>
+    <button id="startButton" onclick="startSortingRace()">Start Sorting Race</button>
 
+    <script src="frontend.js"></script>
     
 </body>
 </html>
