@@ -13,11 +13,11 @@ We want to create a race game between multiple sorting algorithms and Fibonacci 
 
 > Fibonacci Race
 
-<img src="https://github.com/realethantran/fastpages_EthanT/assets/109186517/746d9527-9718-453c-8bbf-e73ac5bac750" height="650px">
+<img src="https://github.com/realethantran/fastpages_EthanT/assets/109186517/746d9527-9718-453c-8bbf-e73ac5bac750" width="100%">
 
 > Sorting Race
 
-<img src="https://github.com/realethantran/fastpages_EthanT/assets/109186517/e2750a41-4e29-4f1c-b576-3a7d5db824b8" height="650px">
+<img src="https://github.com/realethantran/fastpages_EthanT/assets/109186517/e2750a41-4e29-4f1c-b576-3a7d5db824b8" width="100%">
 
 ## Sorting
 
