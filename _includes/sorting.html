@@ -70,6 +70,26 @@
             left: 0;
         }
 
+        .finish {
+            height: 400px; 
+            width: 50px;
+            background-color: rgb(241, 35, 35);
+            position: absolute;
+            right: 0; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .finish-text {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            color: white;
+            font-size: 28px;
+            transform: rotate(180deg);
+        }
+        
+
         #startButton {
             padding: 10px;
             font-size: 16px;
@@ -92,6 +112,9 @@
         </div>
         <div class="lane1" style="top: 75%">
             <img class="race-car4" src="{{site.baseurl}}/images/car4-removebg-preview.png" alt="Car 4">
+        </div>
+        <div class="finish">
+            <span class="finish-text">Finish</span>
         </div>
     </div>
     <button id="startButton" onclick="startSortingRace()">Start Sorting Race</button>
