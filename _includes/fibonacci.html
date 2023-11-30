@@ -21,39 +21,16 @@
             margin-bottom: 20px;
         }
 
-        .race-car1 {
+        .race-car1, .race-car2, .race-car3, .race-car4 {
             position: absolute;
             top: 20px;
             width: 175px;
             height: 70px;
             margin: auto;
+            transition: transform 4s linear; /* Increased the duration for a slower race */
         }
 
-        .race-car2 {
-            position: absolute;
-            top: 20px;
-            width: 175px;
-            height: 70px;
-            margin: auto;
-        }
-
-        .race-car3 {
-            position: absolute;
-            top: 20px;
-            width: 175px;
-            height: 70px;
-            margin: auto;
-        }
-
-        .race-car4 {
-            position: absolute;
-            top: 20px;
-            width: 175px;
-            height: 70px;
-            margin: auto;
-        }
-
-        .lane {
+        .lane, .lane1 {
             height: 25%;
             width: 100%;
             position: absolute;
@@ -90,16 +67,32 @@
         }
         
 
-        #startButton {
+        #startButton, #resetButton {
             padding: 10px;
             font-size: 16px;
             cursor: pointer;
+            margin-right: 10px;
+        }
+
+        #speedForm {
+            margin-top: 20px;
+        }
+
+        #speedForm label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        #speedForm input {
+            width: 50px;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
     <h1 class="text">User Score: 0</h1>
     <h1 class="text">Amount Bet: 0</h1>
+    
     <div id="track">
         <div class="lane">
             <img class="race-car1" src="{{site.baseurl}}/images/car1-removebg-preview.png" alt="Car 1">
@@ -117,9 +110,63 @@
             <span class="finish-text">Finish</span>
         </div>
     </div>
-    <button id="startButton" onclick="startFibonacciRace()">Start Fibonacci Race</button>
 
-    <script src="frontend.js"></script>
-    
+    <form id="speedForm">
+        <label for="speed1">Speed for Car 1:</label>
+        <input type="number" id="speed1" min="1" value="1">
+
+        <label for="speed2">Speed for Car 2:</label>
+        <input type="number" id="speed2" min="1" value="1">
+
+        <label for="speed3">Speed for Car 3:</label>
+        <input type="number" id="speed3" min="1" value="1">
+
+        <label for="speed4">Speed for Car 4:</label>
+        <input type="number" id="speed4" min="1" value="1">
+    </form>
+
+    <button id="startButton" onclick="startFibonacciRace()">Start Fibonacci Race</button>
+    <button id="resetButton" onclick="resetRace()">Reset Race</button>
+
+    <script>
+        function startFibonacciRace() {
+            // user input for car speeds
+            const speed1 = parseFloat(document.getElementById('speed1').value);
+            const speed2 = parseFloat(document.getElementById('speed2').value);
+            const speed3 = parseFloat(document.getElementById('speed3').value);
+            const speed4 = parseFloat(document.getElementById('speed4').value);
+
+            // initial car position
+            document.querySelector('.race-car1').style.transform = `translateX(0)`;
+            document.querySelector('.race-car2').style.transform = `translateX(0)`;
+            document.querySelector('.race-car3').style.transform = `translateX(0)`;
+            document.querySelector('.race-car4').style.transform = `translateX(0)`;
+
+            // start animation
+            setTimeout(() => {
+                document.querySelector('.race-car1').style.transform = `translateX(1300%)`;
+            }, 100 * (1 / speed1));
+
+            setTimeout(() => {
+                document.querySelector('.race-car2').style.transform = `translateX(1300%)`;
+            }, 100 * (1 / speed2));
+
+            setTimeout(() => {
+                document.querySelector('.race-car3').style.transform = `translateX(1300%)`;
+            }, 100 * (1 / speed3));
+
+            setTimeout(() => {
+                document.querySelector('.race-car4').style.transform = `translateX(1300%)`;
+            }, 100 * (1 / speed4));
+        }
+
+        function resetRace() {
+            // reset car position
+            document.querySelector('.race-car1').style.transform = `translateX(0)`;
+            document.querySelector('.race-car2').style.transform = `translateX(0)`;
+            document.querySelector('.race-car3').style.transform = `translateX(0)`;
+            document.querySelector('.race-car4').style.transform = `translateX(0)`;
+        }
+    </script>
 </body>
 </html>
