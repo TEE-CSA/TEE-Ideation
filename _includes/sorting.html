@@ -95,6 +95,25 @@
             font-size: 16px;
             cursor: pointer;
         }
+
+        #lengthForm {
+            margin-top: 20px;
+            margin-bottom: 20px
+        }
+
+        #lengthForm label {
+            font-size: 25px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        #lengthForm input {
+            width: 200px;
+            margin-bottom: 10px;
+            background-color: black;
+            color: white;
+            padding: 5px;
+        }
     </style>
 </head>
 <body>
@@ -117,6 +136,12 @@
             <span class="finish-text">Finish</span>
         </div>
     </div>
+
+    <form id="lengthForm"><center>
+        <label for="length">Length of Fibonacci Numbers</label>
+        <input type="number" id="length" min="1" value="1">
+    </center></form>
+    
     <button id="startButton" onclick="startSortingRace()">Start Sorting Race</button>
 
     <script src="frontend.js"></script>
