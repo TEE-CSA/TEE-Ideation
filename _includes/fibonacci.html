@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -115,19 +114,19 @@
 
     <div id="track">
         <div class="lane">
-            <span class="car-label" id="carLabel1">Merge Sort</span>
+            <span class="car-label" id="carLabel1">For Loop</span>
             <img class="race-car1" src="https://github.com/TEE-CSA/TEEBackend/assets/109186517/0fe7001f-0d2e-40fc-bdd1-9b82373862f5" alt="Car 1">
         </div>
         <div class="lane" style="top: 25%;">
-            <span class="car-label" id="carLabel2">Insertion Sort</span>
+            <span class="car-label" id="carLabel2">While Loop</span>
             <img class="race-car2" src="https://github.com/TEE-CSA/TEEBackend/assets/109186517/6d9bc8e3-8c8e-4854-8194-0b5fdacad24b" alt="Car 2">
         </div>
         <div class="lane" style="top: 50%;">
-            <span class="car-label" id="carLabel3">Bubble Sort</span>
+            <span class="car-label" id="carLabel3">Recursion</span>
             <img class="race-car3" src="https://github.com/TEE-CSA/TEEBackend/assets/109186517/3976c85c-ae57-43a0-9331-1e10bf51d29f" alt="Car 3">
         </div>
         <div class="lane1" style="top: 75%">
-            <span class="car-label" id="carLabel4">Selection Sort</span>
+            <span class="car-label" id="carLabel4">Matrix</span>
             <img class="race-car4" src="https://github.com/TEE-CSA/TEEBackend/assets/109186517/7ad3a783-5957-4979-81c0-33619a9b4ef4" alt="Car 4">
         </div>
         <div class="finish">
@@ -161,15 +160,15 @@
         // asynchronous function to start the Fibonacci race
         async function startFibonacciRace() {
             // fetch sort speeds from the provided API endpoint
-            const response = await fetch('http://localhost:8085/api/sort/speeds');
+            const response = await fetch('http://localhost:8085/api/fibonacci/speeds');
             const speeds = await response.json();
     
             // create an array of sort algorithms with their corresponding speeds
-            const sortAlgorithms = [
-                { algorithm: 'mergeSort', speed: speeds.mergeSort },
-                { algorithm: 'insertionSort', speed: speeds.insertionSort },
-                { algorithm: 'bubbleSort', speed: speeds.bubbleSort },
-                { algorithm: 'selectionSort', speed: speeds.selectionSort },
+            const fibonacciAlgorithms = [
+                { algorithm: 'forLoop', speed: speeds.mergeSort },
+                { algorithm: 'whileLoop', speed: speeds.insertionSort },
+                { algorithm: 'recursion', speed: speeds.bubbleSort },
+                { algorithm: 'matrix', speed: speeds.selectionSort },
             ];
             
 
