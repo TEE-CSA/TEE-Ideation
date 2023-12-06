@@ -5,22 +5,6 @@ type: plan
 courses: {'csa': {'week': 15}}
 ---
 
-# Overview of Today's Lesson
-
-- jQuery
-    - What is jQuery?
-    - What is jQuery used for?
-    - Demonstration of application in markdown and HTML tables
-        - Be able to explain similarities and/or differences between markdown and HTML tables
-- CRUD principles
-    - What does CRUD stand for?
-    - How can CRUD be applied to jQuery and beyond?
-    - Show demonstration of applying CRUD to tables created
-- Hacks (tentative)
-    - A quiz that covers the concepts taught 
-    - Creating their own table with jQuery and explaining how it works
-    - Extra: create something completely unique using jQuery and CRUD, explaining how the project applies the two
-
 # What is jQuery?
 
 Essentially, jQuery is a library that allows us to use some of JavaScript's built in functions
@@ -63,6 +47,57 @@ $(".test").hide() - hides all elements with class="test".
 > Using an online movie database
 
 <html>
+<head>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+    <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    form {
+      margin-bottom: 20px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 4px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    .movie-container {
+      margin-bottom: 20px;
+    }
+    .movie-series-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .movie-series-table th,
+    .movie-series-table td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    .movie-series-table th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
 <body>
   <h1>Movie Search</h1>
 
