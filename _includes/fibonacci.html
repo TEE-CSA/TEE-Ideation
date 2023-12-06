@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -115,39 +114,25 @@
 
     <div id="track">
         <div class="lane">
-            <span class="car-label" id="carLabel1">Merge Sort</span>
+            <span class="car-label" id="carLabel1">For Loop</span>
             <img class="race-car1" src="https://github.com/TEE-CSA/TEEBackend/assets/109186517/0fe7001f-0d2e-40fc-bdd1-9b82373862f5" alt="Car 1">
         </div>
         <div class="lane" style="top: 25%;">
-            <span class="car-label" id="carLabel2">Insertion Sort</span>
+            <span class="car-label" id="carLabel2">While Loop</span>
             <img class="race-car2" src="https://github.com/TEE-CSA/TEEBackend/assets/109186517/6d9bc8e3-8c8e-4854-8194-0b5fdacad24b" alt="Car 2">
         </div>
         <div class="lane" style="top: 50%;">
-            <span class="car-label" id="carLabel3">Bubble Sort</span>
+            <span class="car-label" id="carLabel3">Recursion</span>
             <img class="race-car3" src="https://github.com/TEE-CSA/TEEBackend/assets/109186517/3976c85c-ae57-43a0-9331-1e10bf51d29f" alt="Car 3">
         </div>
         <div class="lane1" style="top: 75%">
-            <span class="car-label" id="carLabel4">Selection Sort</span>
+            <span class="car-label" id="carLabel4">Matrix</span>
             <img class="race-car4" src="https://github.com/TEE-CSA/TEEBackend/assets/109186517/7ad3a783-5957-4979-81c0-33619a9b4ef4" alt="Car 4">
         </div>
         <div class="finish">
             <span class="finish-text">Finish</span>
         </div>
     </div>
-
-    <form id="speedForm">
-        <label for="speed1">Speed for Car 1:</label>
-        <input type="number" id="speed1" min="1" value="1">
-
-        <label for="speed2">Speed for Car 2:</label>
-        <input type="number" id="speed2" min="1" value="1">
-
-        <label for="speed3">Speed for Car 3:</label>
-        <input type="number" id="speed3" min="1" value="1">
-
-        <label for="speed4">Speed for Car 4:</label>
-        <input type="number" id="speed4" min="1" value="1">
-    </form>
 
     <form id="lengthForm"><center>
         <label for="length">Length of Fibonacci Numbers</label>
@@ -158,37 +143,41 @@
     <button id="resetButton" onclick="resetRace()">Reset Race</button>
 
     <script>
-        // asynchronous function to start the Fibonacci race
         async function startFibonacciRace() {
-            // fetch sort speeds from the provided API endpoint
-            const response = await fetch('http://localhost:8085/api/sort/speeds');
-            const speeds = await response.json();
-    
-            // create an array of sort algorithms with their corresponding speeds
-            const sortAlgorithms = [
-                { algorithm: 'mergeSort', speed: speeds.mergeSort },
-                { algorithm: 'insertionSort', speed: speeds.insertionSort },
-                { algorithm: 'bubbleSort', speed: speeds.bubbleSort },
-                { algorithm: 'selectionSort', speed: speeds.selectionSort },
-            ];
-            
+            try {
+                // Fetch algorithm times from the backend
+                const response = await fetch('http://localhost:8085/api/fibonacci/speeds');
+                const algorithmTimes = await response.json();
 
-            // move race cars to the finish line with timing based on their speeds
-            sortAlgorithms.forEach((algorithm, index) => {
-                const carSelector = `.race-car${index + 1}`;
-                setTimeout(() => {
-                    document.querySelector(carSelector).style.transform = `translateX(850%)`;
-                }, 100 * (1 / algorithm.speed));
-            });
+                // Calculate the duration for each algorithm
+                const duration = 4000; // 4 seconds for animation
+                const car1Duration = (algorithmTimes["forLoop"] / 1000) * duration;
+                const car2Duration = (algorithmTimes["whileLoop"] / 1000) * duration;
+                const car3Duration = (algorithmTimes["Recursion"] / 1000) * duration;
+                const car4Duration = (algorithmTimes["Matrix"] / 1000) * duration;
+
+                // Set the animation duration for each car
+                document.querySelector(".race-car1").style.transitionDuration = car1Duration + "ms";
+                document.querySelector(".race-car2").style.transitionDuration = car2Duration + "ms";
+                document.querySelector(".race-car3").style.transitionDuration = car3Duration + "ms";
+                document.querySelector(".race-car4").style.transitionDuration = car4Duration + "ms";
+
+                // Start the race by applying the transform property
+                document.querySelector(".race-car1").style.transform = "translateX(800%)";
+                document.querySelector(".race-car2").style.transform = "translateX(800%)";
+                document.querySelector(".race-car3").style.transform = "translateX(800%)";
+                document.querySelector(".race-car4").style.transform = "translateX(800%)";
+            } catch (error) {
+                console.error('Error fetching algorithm times:', error);
+            }
         }
-    
-        // reset race 
+
         function resetRace() {
-          
-            document.querySelector('.race-car1').style.transform = `translateX(0)`;
-            document.querySelector('.race-car2').style.transform = `translateX(0)`;
-            document.querySelector('.race-car3').style.transform = `translateX(0)`;
-            document.querySelector('.race-car4').style.transform = `translateX(0)`;
+            // Reset the race by setting the transform property back to the initial position
+            document.querySelector(".race-car1").style.transform = "translateX(0)";
+            document.querySelector(".race-car2").style.transform = "translateX(0)";
+            document.querySelector(".race-car3").style.transform = "translateX(0)";
+            document.querySelector(".race-car4").style.transform = "translateX(0)";
         }
     </script>
     
