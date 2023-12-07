@@ -191,7 +191,7 @@ Using an online movie database
       }
       document.getElementById("seriesContainer").appendChild(table);
       $('.movie-series-table').DataTable();
-    } 
+    }
     document.getElementById("seriesForm").addEventListener("submit", function(event) {
       event.preventDefault();
       var seriesTitle = document.getElementById("seriesInput").value;

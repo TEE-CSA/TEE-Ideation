@@ -41,81 +41,28 @@ Benefits of jQuery include:
 
 Whenever you are working with jQuery, the most basic format you will you use is the following:
 
-```$(selector).action()```
+(selector).action()
 
 - The selector refers to the HTML element/target elements (ie. class or ID)
 
 Some examples include:
 
-```$(this).hide()``` - hides the current element.
+(this).hide() - hides the current element.
 
 
-```$("p").hide()``` - hides all <p> elements.
+("p").hide() - hides all <p> elements.
 
 
-```$(".test").hide()``` - hides all elements with class="test".
+$(".test").hide() - hides all elements with class="test".
 
 
-```$("#test").hide()``` - hides the element with id="test".
+("#test").hide() - hides the element with id="test".
 
 ## Using JQuery with APIs
 
-Using an online movie database
+> Using an online movie database
 
-
-```python
 <html>
-<head>
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
-    <style>
-    body {
-      font-family: Arial, sans-serif;
-    }
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-    }
-    form {
-      margin-bottom: 20px;
-    }
-    input[type="text"] {
-      width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      border-radius: 4px;
-      background-color: #4CAF50;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-    }
-    .movie-container {
-      margin-bottom: 20px;
-    }
-    .movie-series-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    .movie-series-table th,
-    .movie-series-table td {
-      padding: 8px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
-    .movie-series-table th {
-      background-color: #f2f2f2;
-    }
-  </style>
-</head>
 <body>
   <h1>Movie Search</h1>
 
@@ -204,7 +151,6 @@ Using an online movie database
   </script>
 </body>
 </html>
-```
 
 As you can see, JQuery can be used with APIs to create a more user friendly output and also makes it easier to work with API's and code. It also allows for DOM manipulation and event handling (to be covered later). Overall, JQuery is a very powerful tool that can be used to help with coding and ensure better user experience.
 
