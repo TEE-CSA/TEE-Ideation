@@ -1,6 +1,6 @@
 ---
 title: jQuery and CRUD Principles Lesson Overview
-description: Our lesson on jQuery and CRUD!
+description: Team TEE Lesson on jQuery and CRUD!
 type: plan
 courses: {'csa': {'week': 15}}
 ---
@@ -23,9 +23,8 @@ courses: {'csa': {'week': 15}}
 
 # What is jQuery?
 
-Any volunteers?
-
-Essentially, jQuery is a library that allows us to use some of JavaScript's built in functions. Think of it as one of the lines you could see at the very top of a code file along with many other import statements. 
+- Essentially, jQuery is a library that allows us to use some of JavaScript's built in functions
+- Think of it as one of the lines you could see at the very top of a code file along with many other import statements
 
 ## Benefits of jQuery
 
@@ -36,6 +35,8 @@ Some benefits of jQuery include but are not limited to:
 - Simplifies some of the most common JavaScript functions into fewer lines of code
 
 **Question:** What are some real life applications of jQuery? Name at least two you can think of. 
+- Web pages, used to make dropdown menus appear smoothly
+- Simplifies implementation of AJAX, allows developers to make asynchronous requests to a server and update parts of a web page without requiring a full page reload
 
 ## Basic Syntax
 
@@ -43,7 +44,9 @@ Whenever you are working with jQuery, the most basic format you will you use is 
 
 ```$(selector).action()```
 
-Some examples of these include:
+- The selector refers to the HTML element/target elements (ie. class or ID)
+
+Some examples include:
 
 ```$(this).hide()``` - hides the current element.
 
@@ -60,6 +63,8 @@ Some examples of these include:
 
 Using an online movie database
 
+
+```python
 <html>
 <head>
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
@@ -161,15 +166,13 @@ Using an online movie database
       }
     }
     function displayMovieSeriesData(movieSeries, creditsData) {
-      var table = document.createElement("table"); // creates a JS table
-      table.classList.add("movie-series-table"); // styles the table
+      var table = $("<table>").addClass("movie-series-table");
       var tableHeader = table.createTHead(); // a header is created 
       var headerRow = tableHeader.insertRow(); // Rows are added to the table
       var columns = ["Title", "Popularity", "Vote Count", "Vote Average", "Poster"]; // column titles
       for (var i = 0; i < columns.length; i++) { // iterates through column array and continues until i is greater than length of columns
       // basically, rows are created for every column
-        var th = document.createElement("th"); // rows are added underneath the headers
-        th.textContent = columns[i]; // data is added to the rows
+        var th = $("<th>").text(columns[i]);
         headerRow.appendChild(th); // the rows are displayed
       }
       var tableBody = table.createTBody(); // the body of the table is created
@@ -186,9 +189,9 @@ Using an online movie database
         var voteAverageCell = row.insertCell();
         voteAverageCell.textContent = movie.vote_average; // the vote average is displayed
         var posterCell = row.insertCell();
-        var posterImage = document.createElement("img");
-        posterImage.src = "https://image.tmdb.org/t/p/w200" + movie.poster_path;
-        posterImage.alt = "Movie Poster";
+        var posterImage = $("<img>")
+          .attr("src", "https://image.tmdb.org/t/p/w200" + movie.poster_path)
+          .attr("alt", "Movie Poster");
         posterCell.appendChild(posterImage);
       }
       document.getElementById("seriesContainer").appendChild(table);
@@ -202,4 +205,31 @@ Using an online movie database
   </script>
 </body>
 </html>
+```
 
+As you can see, JQuery can be used with APIs to create a more user friendly output and also makes it easier to work with API's and code. It also allows for DOM manipulation and event handling (to be covered later). Overall, JQuery is a very powerful tool that can be used to help with coding and ensure better user experience.
+
+### Comparison
+
+Without JQuery:
+
+
+```python
+<script>
+    var posterImage = document.createElement("img");
+    posterImage.src = "https://image.tmdb.org/t/p/w200" + movie.poster_path;
+    posterImage.alt = "Movie Poster";
+</script>
+```
+
+With JQuery:
+
+
+```python
+<script>
+    var posterImage = $("<img>")
+      .attr("src", "https://image.tmdb.org/t/p/w200" + movie.poster_path)
+      .attr("alt", "Movie Poster");
+    posterCell.appendChild(posterImage);
+</script>
+```
