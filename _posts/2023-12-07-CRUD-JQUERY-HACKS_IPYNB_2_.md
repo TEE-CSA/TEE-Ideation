@@ -1,6 +1,8 @@
 ---
 title: JQUERY & CRUD HACKS
 description: hacks for CRUD with JQUERY
+author: Tay K., Emaad M., Ethan T., Finn C., Theo H., Justin N.
+comments: True
 ---
 
 # Directions

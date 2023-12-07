@@ -62,6 +62,10 @@ Some examples include:
 
 Using an online movie database
 
+ddd
+
+
+```python
 <html>
 <head>
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
@@ -202,6 +206,7 @@ Using an online movie database
   </script>
 </body>
 </html>
+```
 
 As you can see, JQuery can be used with APIs to create a more user friendly output and also makes it easier to work with API's and code. It also allows for DOM manipulation and event handling (to be covered later). Overall, JQuery is a very powerful tool that can be used to help with coding and ensure better user experience.
 
