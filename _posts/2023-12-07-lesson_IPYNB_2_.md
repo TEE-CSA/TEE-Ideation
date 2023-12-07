@@ -42,10 +42,6 @@ Some examples include:
 
 ("#test").hide() - hides the element with id="test".
 
-## Using JQuery with APIs
-
-> Using an online movie database
-
 <html>
 <head>
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
