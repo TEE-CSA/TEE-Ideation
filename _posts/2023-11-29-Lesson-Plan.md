@@ -26,3 +26,6 @@ Our group chose to teach the lesson on jQuery and CRUD, which we are to teach to
     - A quiz that covers the concepts taught 
     - Creating their own table with jQuery and explaining how it works
     - Extra: create something completely unique using jQuery and CRUD, explaining how the project applies the two
+
+
+
