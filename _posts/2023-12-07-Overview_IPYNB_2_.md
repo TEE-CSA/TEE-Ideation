@@ -23,12 +23,11 @@ courses: {'csa': {'week': 15}}
 
 # What is jQuery?
 
-- Essentially, jQuery is a library that allows us to use some of JavaScript's built in functions
-- Think of it as one of the lines you could see at the very top of a code file along with many other import statements
+Essentially, jQuery is a library that allows us to use some of JavaScript's built in functions
 
 ## Benefits of jQuery
 
-Some benefits of jQuery include but are not limited to:
+Benefits of jQuery include:
 
 - Makes it easier for us to write JavaScript and HTML code
 - Very flexible in terms of which browsers it can work on
