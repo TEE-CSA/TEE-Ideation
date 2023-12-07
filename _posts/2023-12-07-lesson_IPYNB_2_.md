@@ -111,34 +111,34 @@ Some examples include:
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
   <script>
-    function fetchMovieSeriesData(seriesTitle) {
-      var apiUrl = "https://api.themoviedb.org/3/search/movie?api_key=5f87798890b72c6ac53b262ba43ed8c6&query=" + encodeURIComponent(seriesTitle); 
-      var request = new XMLHttpRequest(); // requests data
-      request.open("GET", apiUrl, true); // fetches the data from the url
-      request.onload = function() { 
-        if (request.status >= 200 && request.status < 300) { // if request is successful - more specific than before
-          var data = JSON.parse(request.responseText); // JS variable from JSON data
-          fetchSeriesMovieData(data);
-        } else {
-          document.getElementById("seriesContainer").textContent = "Error fetching movie series data.";
-          console.log(request.status);
-        }
-      };
-      request.onerror = function() {
-        document.getElementById("seriesContainer").textContent = "Error fetching movie series data.";
-        console.log(request.status);
-      };
-      request.send();
+    async function fetchMovieSeriesData(seriesTitle) {
+    try {
+      const apiUrl = `https://api.themoviedb.org/3/search/movie?api_key=5f87798890b72c6ac53b262ba43ed8c6&query=${encodeURIComponent(seriesTitle)}`;
+      const response = await fetch(apiUrl);
+      if (response.ok) {
+        const data = await response.json();
+        fetchSeriesMovieData(data);
+      } else {
+        throw new Error(`Error fetching movie series data. Status code: ${response.status}`);
+      }
+    } catch (error) {
+      console.error("Error fetching movie series data:", error);
+      handleRequestError();
     }
-    function fetchSeriesMovieData(data) {
-      if (data.results && data.results.length > 0) { // checks that data contains info and is not empty
-        var movieSeries = data.results;
-        var creditsDataPromises = movieSeries.map(function(movie) { // creates an array of promises, which each fetch data for a movie in the series through a separate API request
-          var apiUrl = "https://api.themoviedb.org/3/movie/" + movie.id + "/credits?api_key=5f87798890b72c6ac53b262ba43ed8c6";
-          return fetch(apiUrl).then(function(response) { // each request from each promise
-            return response.json();
+  }
+  function fetchSeriesMovieData(data) {
+    if (data.results && data.results.length > 0) {
+      const movieSeries = data.results;
+      const creditsDataPromises = movieSeries.map(function(movie) {
+        const apiUrl = `https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=5f87798890b72c6ac53b262ba43ed8c6`;
+        return fetch(apiUrl)
+          .then(response => response.json())
+          .catch(error => {
+            console.error(`Error fetching credits data for movie ${movie.id}:`, error);
+            // Return a placeholder value or handle the error as needed
+            return null;
           });
-        });
+      });
         Promise.all(creditsDataPromises).then(function(creditsData) { // All promises are resolved and a new function is called with the movies series and the data
           displayMovieSeriesData(movieSeries, creditsData);  
         }).catch(function(error) { // if an error appears
