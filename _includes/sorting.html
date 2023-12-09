@@ -26,16 +26,22 @@
         </div>
     </div>
 
+    <form id="lengthForm">
+        <label for="length">Length of Fibonacci Numbers</label>
+        <input type="number" id="length" min="1" value="1">
+    </form>
+
     <input type="number" id="betInput" placeholder="Enter bet amount" />
     <button id="betBtn" onclick="placeBet()">Place Bet</button>
-    <button id="startBtn" onclick="startRace()">Start Race</button>
+    <button id="startBtn" onclick="startSortingRace()">Start Race</button>
     <button id="resetBtn" onclick="resetRace()">Reset Race</button>
 
     <script>
-        async function startRace() {
+        async function startSortingRace() {
             try {
                 // fetch algorithm times
-                const response = await fetch('http://localhost:8085/api/sort/speeds');
+                const length = document.getElementById('length').value;
+                const response = await fetch(`http://localhost:8085/api/sort/speeds?length=${length}`);
                 const algorithmTimes = await response.json();
 
                 // calculate the duration for each algorithm
