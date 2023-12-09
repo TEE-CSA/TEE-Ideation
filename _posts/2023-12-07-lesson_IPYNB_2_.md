@@ -464,14 +464,12 @@ CrudExample.main(null);
         </tr>
     </thead>
     <tbody>
-        <!-- Data will be dynamically added here -->
+        <!-- Initial data will be dynamically added here -->
     </tbody>
 </table>
 
 <!-- Button to trigger the creation of a new Disney character -->
 <button id="create-btn">Create Disney Character</button>
-
-
 
 <script>
     // Initial data for Disney characters
@@ -482,6 +480,18 @@ CrudExample.main(null);
 
     // Dynamic data that can be updated or modified
     let dynamicData = [...initialData];
+
+    // Function to remove rows with duplicate IDs
+    function removeDuplicateIds(data) {
+        const uniqueIds = new Set();
+        return data.filter(item => {
+            if (uniqueIds.has(item.id)) {
+                return false; // Duplicate ID, exclude this item
+            }
+            uniqueIds.add(item.id);
+            return true;
+        });
+    }
 
     // Function to render data into the table
     function renderData(data) {
@@ -509,30 +519,33 @@ CrudExample.main(null);
     function createDisneyCharacter() {
         const newName = prompt('Enter the name of the Disney character:');
         const newEmail = prompt('Enter the email of the Disney character:');
-        const newId = dynamicData.length + 1;
+
+        // Check if there are multiple rows with the same ID
+        const existingIds = [...initialData, ...dynamicData].map(item => item.id);
+        const newId = existingIds.length > 0 ? Math.max(...existingIds) + 1 : 1;
 
         // Add the new character to the dynamic data array
         dynamicData = [...dynamicData, { id: newId, name: newName, email: newEmail }];
 
-        // Render the combined data (initial + dynamic)
-        renderData([...initialData, ...dynamicData]);
+        // Render only the dynamic data
+        renderData(removeDuplicateIds(dynamicData));
     }
 
     // Event handler for the "Create Disney Character" button click
     $('#create-btn').on('click', createDisneyCharacter);
 
     // Event handler for the "Delete" and "Update" buttons inside the table
-    $('#data-table').on('click', '.delete-btn', function() {
+    $('#data-table').on('click', '.delete-btn', function () {
         // Get the ID of the item to delete
         const idToDelete = $(this).data('id');
         // Filter out the item with the specified ID from the dynamic data
         dynamicData = dynamicData.filter(item => item.id !== idToDelete);
-        // Render the combined data (initial + dynamic)
-        renderData([...initialData, ...dynamicData]);
+        // Render only the dynamic data
+        renderData(removeDuplicateIds(dynamicData));
     });
 
     // Event handler for the "Update" button inside the table
-    $('#data-table').on('click', '.update-btn', function() {
+    $('#data-table').on('click', '.update-btn', function () {
         // Get the ID of the item to update
         const idToEdit = $(this).data('id');
         // Find the index of the item in the dynamic data array
@@ -547,15 +560,14 @@ CrudExample.main(null);
             // Update the item in the dynamic data array
             dynamicData[updateIndex] = { id: idToEdit, name: updateName, email: updateEmail };
 
-            // Render the combined data (initial + dynamic)
-            renderData([...initialData, ...dynamicData]);
+            // Render only the dynamic data
+            renderData(removeDuplicateIds(dynamicData));
         }
     });
 
     // Initial rendering of the table with the initial data
-    renderData([...initialData, ...dynamicData]);
+    renderData(removeDuplicateIds(initialData));
 </script>
-
 
 
 
@@ -618,14 +630,12 @@ CrudExample.main(null);
         </tr>
     </thead>
     <tbody>
-        <!-- Data will be dynamically added here -->
+        <!-- Initial data will be dynamically added here -->
     </tbody>
 </table>
 
 <!-- Button to trigger the creation of a new Disney character -->
 <button id="create-btn">Create Disney Character</button>
-
-
 
 <script>
     // Initial data for Disney characters
@@ -636,6 +646,18 @@ CrudExample.main(null);
 
     // Dynamic data that can be updated or modified
     let dynamicData = [...initialData];
+
+    // Function to remove rows with duplicate IDs
+    function removeDuplicateIds(data) {
+        const uniqueIds = new Set();
+        return data.filter(item => {
+            if (uniqueIds.has(item.id)) {
+                return false; // Duplicate ID, exclude this item
+            }
+            uniqueIds.add(item.id);
+            return true;
+        });
+    }
 
     // Function to render data into the table
     function renderData(data) {
@@ -663,30 +685,33 @@ CrudExample.main(null);
     function createDisneyCharacter() {
         const newName = prompt('Enter the name of the Disney character:');
         const newEmail = prompt('Enter the email of the Disney character:');
-        const newId = dynamicData.length + 1;
+
+        // Check if there are multiple rows with the same ID
+        const existingIds = [...initialData, ...dynamicData].map(item => item.id);
+        const newId = existingIds.length > 0 ? Math.max(...existingIds) + 1 : 1;
 
         // Add the new character to the dynamic data array
         dynamicData = [...dynamicData, { id: newId, name: newName, email: newEmail }];
 
-        // Render the combined data (initial + dynamic)
-        renderData([...initialData, ...dynamicData]);
+        // Render only the dynamic data
+        renderData(removeDuplicateIds(dynamicData));
     }
 
     // Event handler for the "Create Disney Character" button click
     $('#create-btn').on('click', createDisneyCharacter);
 
     // Event handler for the "Delete" and "Update" buttons inside the table
-    $('#data-table').on('click', '.delete-btn', function() {
+    $('#data-table').on('click', '.delete-btn', function () {
         // Get the ID of the item to delete
         const idToDelete = $(this).data('id');
         // Filter out the item with the specified ID from the dynamic data
         dynamicData = dynamicData.filter(item => item.id !== idToDelete);
-        // Render the combined data (initial + dynamic)
-        renderData([...initialData, ...dynamicData]);
+        // Render only the dynamic data
+        renderData(removeDuplicateIds(dynamicData));
     });
 
     // Event handler for the "Update" button inside the table
-    $('#data-table').on('click', '.update-btn', function() {
+    $('#data-table').on('click', '.update-btn', function () {
         // Get the ID of the item to update
         const idToEdit = $(this).data('id');
         // Find the index of the item in the dynamic data array
@@ -701,12 +726,13 @@ CrudExample.main(null);
             // Update the item in the dynamic data array
             dynamicData[updateIndex] = { id: idToEdit, name: updateName, email: updateEmail };
 
-            // Render the combined data (initial + dynamic)
-            renderData([...initialData, ...dynamicData]);
+            // Render only the dynamic data
+            renderData(removeDuplicateIds(dynamicData));
         }
     });
 
     // Initial rendering of the table with the initial data
-    renderData([...initialData, ...dynamicData]);
+    renderData(removeDuplicateIds(initialData));
 </script>
+
 ```
