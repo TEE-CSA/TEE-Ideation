@@ -140,7 +140,7 @@
         async function startRace() {
             try {
                 // Fetch algorithm times from the backend
-                const response = await fetch('http://localhost:8085/api/sort/speeds');
+                const response = await fetch('http://localhost:8099/api/sort/speeds');
                 const algorithmTimes = await response.json();
 
                 // Calculate the duration for each algorithm
