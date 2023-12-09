@@ -27,7 +27,7 @@
     </div>
 
     <form id="lengthForm">
-        <label for="length">Length of Fibonacci Numbers</label>
+        <label for="length">Length of Sorting Array</label>
         <input type="number" id="length" min="1" value="1">
     </form>
 
@@ -40,16 +40,16 @@
         async function startSortingRace() {
             try {
                 // fetch algorithm times
-                const length = document.getElementById('length').value;
-                const response = await fetch(`http://localhost:8085/api/sort/speeds?length=${length}`);
+                const arraySize = document.getElementById('length').value;
+                const response = await fetch(`http://localhost:8085/api/sort/speeds?arraySize=${arraySize}`);
                 const algorithmTimes = await response.json();
 
                 // calculate the duration for each algorithm
                 const duration = 4000; // 4 seconds for animation
-                const car1Duration = (algorithmTimes["mergeSort"] / 1000) * duration;
-                const car2Duration = (algorithmTimes["insertionSort"] / 1000) * duration;
-                const car3Duration = (algorithmTimes["bubbleSort"] / 1000) * duration;
-                const car4Duration = (algorithmTimes["selectionSort"] / 1000) * duration;
+                const car1Duration = algorithmTimes["mergeSort"];
+                const car2Duration = algorithmTimes["insertionSort"];
+                const car3Duration = algorithmTimes["bubbleSort"];
+                const car4Duration = algorithmTimes["selectionSort"];
 
                 // set animation duration for each car
                 document.querySelector(".race-car1").style.transitionDuration = car1Duration + "ms";
