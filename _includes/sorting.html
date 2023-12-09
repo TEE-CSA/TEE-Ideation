@@ -1,5 +1,3 @@
-<html lang="en">
-
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
@@ -22,33 +20,16 @@
             margin-bottom: 20px;
         }
 
-        /* Common styles for all race cars */
-        .race-car {
+        .race-car1, .race-car2, .race-car3, .race-car4 {
+            position: absolute;
+            top: 20px;
             width: 175px;
             height: 70px;
             margin: auto;
             transition: transform 4s linear;
         }
 
-        /* Specific styles for each race car */
-        .race-car1 {
-            top: 20px;
-        }
-
-        .race-car2 {
-            top: 25%;
-        }
-
-        .race-car3 {
-            top: 50%;
-        }
-
-        .race-car4 {
-            top: 75%;
-        }
-
-        .lane,
-        .lane1 {
+        .lane, .lane1 {
             height: 25%;
             width: 100%;
             position: absolute;
@@ -69,8 +50,8 @@
             height: 400px;
             width: 50px;
             background-color: rgb(241, 35, 35);
-            position: absolute;
-            right: 0;
+            position: relative;
+            left: 100%; 
             display: flex;
             align-items: center;
             justify-content: center;
@@ -84,32 +65,65 @@
             transform: rotate(180deg);
         }
 
+        #startButton, #resetButton {
+            display: inline-block;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        #speedForm {
+            margin-top: 20px;
+        }
+
+        #speedForm label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        #speedForm input {
+            width: 50px;
+            margin-bottom: 10px;
+        }
+
+        #lengthForm {
+            margin-top: 20px;
+            margin-bottom: 20px
+        }
+
+        #lengthForm label {
+            font-size: 25px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        #lengthForm input {
+            width: 200px;
+            margin-bottom: 10px;
+            background-color: black;
+            color: white;
+            padding: 5px;
+        }
         .car-label {
             position: absolute;
             top: 30%;
-            left: -60px;
+            left: -65px;
             text-align: center;
-            width: 60px;
+            width: 65px;
             color: white;
             font-size: 14px;
             writing-mode: horizontal-tb;
             text-orientation: upright;
         }
-
-        #startBtn,
-        #resetBtn {
-            display: block;
-            margin: 10px;
-            padding: 5px 10px;
-            font-size: 16px;
-            cursor: pointer;
-        }
     </style>
 </head>
 
 <body>
-    <h1 class="text">User Score: 0</h1>
-    <h1 class="text">Amount Bet: 0</h1>
+    <h1 class="text">User Score: <span id="userScore">500</span></h1> 
+    <h1 class="text">Amount Bet: <span id="betAmount">0</span></h1>
+
+
 
     <div id="track">
         <div class="lane">
@@ -133,10 +147,19 @@
         </div>
     </div>
 
+    <input type="number" id="betInput" placeholder="Enter bet amount" />
+    <button id="betBtn" onclick="placeBet()">Place Bet</button>
+    
+
+
     <button id="startBtn" onclick="startRace()">Start Race</button>
     <button id="resetBtn" onclick="resetRace()">Reset Race</button>
 
     <script>
+
+        
+
+    
         async function startRace() {
             try {
                 // Fetch algorithm times from the backend
@@ -157,13 +180,21 @@
                 document.querySelector(".race-car4").style.transitionDuration = car4Duration + "ms";
 
                 // Start the race by applying the transform property
-                document.querySelector(".race-car1").style.transform = "translateX(800%)";
-                document.querySelector(".race-car2").style.transform = "translateX(800%)";
-                document.querySelector(".race-car3").style.transform = "translateX(800%)";
-                document.querySelector(".race-car4").style.transform = "translateX(800%)";
+                document.querySelector(".race-car1").style.transform = "translateX(970px)";
+                document.querySelector(".race-car2").style.transform = "translateX(970px)";
+                document.querySelector(".race-car3").style.transform = "translateX(970px)";
+                document.querySelector(".race-car4").style.transform = "translateX(970px)";
+
+                setTimeout(() => {
+                    alert("Race finished! You bet on: " + selectedAlgorithm + "\n" + result.message);
+                    document.getElementById("userScore").textContent = userScore;
+                }, Math.max(car1Duration, car2Duration, car3Duration, car4Duration));
+
             } catch (error) {
                 console.error('Error fetching algorithm times:', error);
             }
+
+            
         }
 
         function resetRace() {
@@ -173,7 +204,29 @@
             document.querySelector(".race-car3").style.transform = "translateX(0)";
             document.querySelector(".race-car4").style.transform = "translateX(0)";
         }
+
+    async function placeBet() {
+        const betAmount = parseInt(document.getElementById("betInput").value);
+        if (isNaN(betAmount) || betAmount <= 0 || betAmount > userScore) {
+            alert("Invalid bet amount");
+            return;
+        }
+        document.getElementById("betAmount").textContent = betAmount;
+
+        // Send bet to backend
+        try {
+            const response = await fetch(`http://localhost:8085/api/sort/bet?betAmount=${betAmount}&startingPoints=${userScore}`);
+            const result = await response.json();
+
+            userScore = result.newScore; // Update the user's score
+            document.getElementById("userScore").textContent = userScore;
+
+        // Start the race with the selected algorithm
+            startRace(result.selectedAlgorithm);
+        } catch (error) {
+            console.error('Error placing bet:', error);
+        }
+}
+
     </script>
 </body>
-
-</html>
