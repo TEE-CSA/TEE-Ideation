@@ -388,3 +388,31 @@ body {
     writing-mode: horizontal-tb;
     text-orientation: upright;
 }
+
+.text1 {
+    position: absolute;
+    top: 5%; /* Adjust as necessary */
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: black;
+    font-size: 24px;
+    font-weight: bold;
+    z-index: 1000;
+}
+
+.text2 {
+    position: absolute;
+    top: 10%; /* Position it below text1 */
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: black;
+    font-size: 24px;
+    font-weight: bold;
+    z-index: 1000;
+}
+
+#track {
+    margin-top: 15%; /* Adjust as necessary */
+}
