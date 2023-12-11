@@ -3,8 +3,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <h1 class="text">User Score: 0</h1>
-    <h1 class="text">Amount Bet: 0</h1>
+    <h1 class="text">User Score: <span id="userScoreFib">500</span></h1>
+    <h1 class="text">Amount Bet: <span id="betAmountFib">0</span></h1>
 
     <div id="track">
         <div class="lane">
@@ -37,7 +37,9 @@
     <button id="resetButton" onclick="resetRace()">Reset Race</button>
 
     <script>
-        async function startFibonacciRace() {
+        let userScoreFib = 500; // Initial user score
+        let betAmountFib = 0;   
+        async function startFibonacciRace(selectedAlgorithm, result) {
             try {
                 // Fetch algorithm times from the backend
                 const length = document.getElementById('length').value;
@@ -74,6 +76,39 @@
             document.querySelector(".race-car3").style.transform = "translateX(0)";
             document.querySelector(".race-car4").style.transform = "translateX(0)";
         }
+
+        async function placeBetFib() {
+            const betInput = parseInt(document.getElementById("fibBetInput").value);
+            if (isNaN(betInput) || betInput <= 0 || betInput > userScoreFib) {
+                alert("Invalid bet amount");
+                return;
+            }
+
+            // Update bet amount display
+            betAmountFib = betInput;
+            document.getElementById("betAmountFib").textContent = betAmountFib;
+
+            // Fetch bet results
+            try {
+                const response = await fetch(`http://localhost:8085/api/fibonacci/bet?betAmount=${betAmountFib}&startingPoints=${userScoreFib}`);
+                const result = await response.json();
+
+                // Update user score
+                userScoreFib = result.newScore;
+                document.getElementById("userScoreFib").textContent = userScoreFib;
+
+                // Start race with result
+                startFibonacciRace(result.selectedAlgorithm, result);
+            } catch (error) {
+                console.error('Error placing bet:', error);
+            }
+
+            setTimeout(() => {
+                alert(`Race finished! Winning algorithm: ${selectedAlgorithm}. ${result.didUserWin ? 'You won!' : 'You lost.'} Fun Fact: ${result.funFact}`);
+                // Update UI elements if needed
+            }, Math.max(car1Duration, car2Duration, car3Duration, car4Duration));
+}
+
     </script>
 </body>
 </html>

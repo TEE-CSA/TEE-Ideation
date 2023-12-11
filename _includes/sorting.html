@@ -37,67 +37,67 @@
     <button id="resetBtn" onclick="resetRace()">Reset Race</button>
 
     <script>
-        async function startSortingRace() {
-            try {
-                // fetch algorithm times
-                const arraySize = document.getElementById('length').value;
-                const response = await fetch(`http://localhost:8085/api/sort/speeds?arraySize=${arraySize}`);
-                const algorithmTimes = await response.json();
+        let userScore = 500;  // Initial user score
+    let betAmount = 0;    // Initial bet amount
 
-                // calculate the duration for each algorithm
-                const duration = 4000; // 4 seconds for animation
-                const car1Duration = algorithmTimes["mergeSort"];
-                const car2Duration = algorithmTimes["insertionSort"];
-                const car3Duration = algorithmTimes["bubbleSort"];
-                const car4Duration = algorithmTimes["selectionSort"];
+    async function startSortingRace(result) {
+        // Fetch algorithm times based on array size
+        const arraySize = document.getElementById('length').value;
+        const algorithmTimesResponse = await fetch(`http://localhost:8085/api/sort/speeds?arraySize=${arraySize}`);
+        const algorithmTimes = await algorithmTimesResponse.json();
 
-                // set animation duration for each car
-                document.querySelector(".race-car1").style.transitionDuration = car1Duration + "ms";
-                document.querySelector(".race-car2").style.transitionDuration = car2Duration + "ms";
-                document.querySelector(".race-car3").style.transitionDuration = car3Duration + "ms";
-                document.querySelector(".race-car4").style.transitionDuration = car4Duration + "ms";
+        // Set animation duration for each car based on the algorithm times
+        const duration = 4000; // 4 seconds for animation
+        document.querySelector(".race-car1").style.transitionDuration = algorithmTimes["mergeSort"] * duration + "ms";
+        document.querySelector(".race-car2").style.transitionDuration = algorithmTimes["insertionSort"] * duration + "ms";
+        document.querySelector(".race-car3").style.transitionDuration = algorithmTimes["bubbleSort"] * duration + "ms";
+        document.querySelector(".race-car4").style.transitionDuration = algorithmTimes["selectionSort"] * duration + "ms";
 
-                // start race by applying the transform property
-                document.querySelector(".race-car1").style.transform = "translateX(970px)";
-                document.querySelector(".race-car2").style.transform = "translateX(970px)";
-                document.querySelector(".race-car3").style.transform = "translateX(970px)";
-                document.querySelector(".race-car4").style.transform = "translateX(970px)";
+        // Start race by applying the transform property
+        document.querySelector(".race-car1").style.transform = "translateX(970px)";
+        document.querySelector(".race-car2").style.transform = "translateX(970px)";
+        document.querySelector(".race-car3").style.transform = "translateX(970px)";
+        document.querySelector(".race-car4").style.transform = "translateX(970px)";
 
-                setTimeout(() => {
-                    alert("Race finished! You bet on: " + selectedAlgorithm + "\n" + result.message);
-                    document.getElementById("userScore").textContent = userScore;
-                }, Math.max(car1Duration, car2Duration, car3Duration, car4Duration));
-            } catch (error) {
-                console.error('Error fetching algorithm times:', error);
-            }
-        }
-        function resetRace() {
-            // reset race by setting the transform property back to the initial position
-            document.querySelector(".race-car1").style.transform = "translateX(0)";
-            document.querySelector(".race-car2").style.transform = "translateX(0)";
-            document.querySelector(".race-car3").style.transform = "translateX(0)";
-            document.querySelector(".race-car4").style.transform = "translateX(0)";
-        }
-    async function placeBet() {
-        const betAmount = parseInt(document.getElementById("betInput").value);
-        if (isNaN(betAmount) || betAmount <= 0 || betAmount > userScore) {
-            alert("Invalid bet amount");
-            return;
-        }
-        document.getElementById("betAmount").textContent = betAmount;
-        // send bet to backend
-        try {
-            const response = await fetch(`http://localhost:8085/api/sort/bet?betAmount=${betAmount}&startingPoints=${userScore}`);
-            const result = await response.json();
+        // Display the race result after the longest duration
+        const maxDuration = Math.max(...Object.values(algorithmTimes)) * duration;
+        setTimeout(() => {
+            const winLossAmount = result.didUserWin ? result.newScore - userScore : userScore - result.newScore;
+            const winLossMessage = result.didUserWin ? `You won ${winLossAmount} points!` : `You lost ${winLossAmount} points.`;
+
+            alert(`Race finished! Algorithm Bet on: ${result.selectedAlgorithm}\n` +
+                  `Winning algorithm: ${result.fastestAlgorithm}\n` +
+                  winLossMessage +
+                  `Fun Fact: ${result.funFact}`);
 
             userScore = result.newScore; // Update the user's score
             document.getElementById("userScore").textContent = userScore;
+        }, maxDuration);
+    }
 
-        // start the race with the selected algorithm
-            startRace(result.selectedAlgorithm);
-        } catch (error) {
-            console.error('Error placing bet:', error);
+    function resetRace() {
+        // Reset race and input fields
+        document.querySelectorAll('.race-car').forEach(car => car.style.transform = "translateX(0)");
+        document.getElementById("betInput").value = '';
+        document.getElementById("length").value = '1';
+        betAmount = 0;
+        document.getElementById("betAmount").textContent = betAmount;
+    }
+    
+    async function placeBet() {
+        const betInputValue = parseInt(document.getElementById("betInput").value);
+        if (isNaN(betInputValue) || betInputValue <= 0 || betInputValue > userScore) {
+            alert("Invalid bet amount");
+            return;
         }
-}
-    </script>
-</body>
+
+        betAmount = betInputValue; // Update bet amount
+        document.getElementById("betAmount").textContent = betAmount;
+
+        const betResponse = await fetch(`http://localhost:8085/api/sort/bet?betAmount=${betAmount}&startingPoints=${userScore}`);
+        const result = await betResponse.json();
+
+        startSortingRace(result); // Pass the result to the race function
+    }
+</script>
+    </body>
