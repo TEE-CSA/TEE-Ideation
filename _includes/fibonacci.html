@@ -158,7 +158,7 @@
             try {
                 // Fetch algorithm times from the backend
                 const length = document.getElementById('length').value;
-                const response = await fetch(`http://localhost:8085/api/fibonacci/speeds?length=${length}`);
+                const response = await fetch(`http://localhost:8099/api/fibonacci/speeds?length=${length}`);
                 const algorithmTimes = await response.json();
 
                 // Calculate the duration for each algorithm
