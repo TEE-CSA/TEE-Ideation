@@ -78,6 +78,7 @@
                 document.querySelector(".race-car2").style.transform = "translateX(970px)";
                 document.querySelector(".race-car3").style.transform = "translateX(970px)";
                 document.querySelector(".race-car4").style.transform = "translateX(970px)";
+                updateResultTable(algorithmTimes);
 
                 setTimeout(() => {
                     if (raceResultFib) {
@@ -85,7 +86,6 @@
                         alert(`Race finished! Winning algorithm: ${raceResultFib.selectedAlgorithm}. ${winLossMessage} Fun Fact: ${raceResultFib.funFact}`);
                         userScoreFib += raceResultFib.didUserWin ? betAmountFib * 2 : -betAmountFib;
                         document.getElementById("userScoreFib").textContent = userScoreFib;
-                        updateResultTable(algorithmTimes);
                     }
                 }, Math.max(...Object.values(algorithmTimes)) * 4000);
             } catch (error) {
