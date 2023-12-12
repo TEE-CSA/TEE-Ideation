@@ -65,7 +65,7 @@
             setCarAnimation(algorithmTimes);
 
             // update the table with results
-            updateResultsTable(algorithmTimes);
+            updateResultTable(algorithmTimes);
 
             // Wait for all car animations to complete before showing the results
             await Promise.all([
@@ -124,7 +124,6 @@
             try {
                 // Get the table body
                 const tableBody = document.getElementById("data");
-                tableBody.innerHTML = '';
 
                 // Add new rows based on algorithmTimes
                 Object.keys(algorithmTimes).forEach(method => {
