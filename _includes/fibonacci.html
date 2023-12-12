@@ -37,6 +37,17 @@
     <button id="startBtn" onclick="startFibonacciRace()">Start Fibonacci Race</button>
     <button id="resetBtn" onclick="resetRace()">Reset Race</button>
 
+    <br>
+    <br> 
+    <table id="data">
+        <tr>
+            <th>Method</th>
+            <th>Time</th>
+            <th>Iterations</th>
+            <th>Time Complexity</th>
+        </tr>
+    </table>
+
     <script>
         let userScoreFib = 500; // Initial user score for Fibonacci race
         let betAmountFib = 0;   // Initial bet amount for Fibonacci race
@@ -74,54 +85,55 @@
                         alert(`Race finished! Winning algorithm: ${raceResultFib.selectedAlgorithm}. ${winLossMessage} Fun Fact: ${raceResultFib.funFact}`);
                         userScoreFib += raceResultFib.didUserWin ? betAmountFib * 2 : -betAmountFib;
                         document.getElementById("userScoreFib").textContent = userScoreFib;
+                        updateResultTable(algorithmTimes);
                     }
                 }, Math.max(...Object.values(algorithmTimes)) * 4000);
             } catch (error) {
                 console.error('Error fetching algorithm times:', error);
             }
+        }
+        function updateResultTable(algorithmTimes) {
             try {
-                await new Promise(resolve => setTimeout(resolve, Math.max(...Object.values(algorithmTimes)) * 4000));
-                const resultTable = document.createElement("table");
-                resultTable.innerHTML = `
-                    <tr>
-                        <th>Algorithm</th>
-                        <th>Time (ms)</th>
-                        <th>Iterations</th>
-                        <th>Time Complexity</th>
-                    </tr>
-                    <tr>
-                        <td>For Loop</td>
-                        <td>${algorithmTimes["forLoopFibonacci"]["time"]}</td>
-                        <td>${algorithmTimes["forLoopFibonacci"]["iterations"]}</td>
-                        <td>O(n)</td>
-                    </tr>
-                    <tr>
-                        <td>While Loop</td>
-                        <td>${algorithmTimes["whileLoopFibonacci"]["time"]}</td>
-                        <td>${algorithmTimes["whileLoopFibonacci"]["iterations"]}</td>
-                        <td>O(n)</td>
-                    </tr>
-                    <tr>
-                        <td>Recursion</td>
-                        <td>${algorithmTimes["recursionFibonacci"]["time"]}</td>
-                        <td>${algorithmTimes["recursionFibonacci"]["iterations"]}</td>
-                        <td>O(n^2)</td>
-                    </tr>
-                    <tr>
-                        <td>Matrix</td>
-                        <td>${algorithmTimes["matrixFibonacci"]["time"]}</td>
-                        <td>${algorithmTimes["matrixFibonacci"]["iterations"]}</td>
-                        <td>O(log(n))</td>
-                    </tr>
-                `;
-
-                // Append the table to the body or another container
-                document.body.appendChild(resultTable);
-
+                const table = document.getElementById("data");
+        
+                // Add data rows to the table
+                addRow(table, "For Loop", algorithmTimes["forLoopFibonacci"]);
+                addRow(table, "While Loop", algorithmTimes["whileLoopFibonacci"]);
+                addRow(table, "Recursion", algorithmTimes["recursionFibonacci"]);
+                addRow(table, "Matrix", algorithmTimes["matrixFibonacci"]);
             } catch (error) {
-                console.error('Error fetching algorithm times:', error);
+                console.error('Error updating result table:', error);
             }
         }
+        
+        function addRow(table, method, data) {
+            const row = table.insertRow();
+            const cell1 = row.insertCell(0);
+            const cell2 = row.insertCell(1);
+            const cell3 = row.insertCell(2);
+            const cell4 = row.insertCell(3);
+        
+            cell1.innerHTML = method;
+            cell2.innerHTML = data["time"];
+            cell3.innerHTML = data["iterations"];
+            cell4.innerHTML = getComplexity(method);
+        }
+        
+        function getComplexity(method) {
+            // You can customize this function to return the time complexity based on the method
+            switch (method) {
+                case "For Loop":
+                case "While Loop":
+                    return "O(n)";
+                case "Recursion":
+                    return "O(n^2)";
+                case "Matrix":
+                    return "O(log(n))";
+                default:
+                    return "";
+            }
+        }
+        
         function resetRace() {
             document.querySelector(".race-car1").style.transform = "translateX(0)";
             document.querySelector(".race-car2").style.transform = "translateX(0)";
