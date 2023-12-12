@@ -67,10 +67,10 @@
 
             // set animation duration for each car based on the algorithm times
             const duration = 4000; // 4 seconds for animation
-            document.querySelector(".race-car1").style.transitionDuration = (algorithmTimes["mergeSort"].time / 1000) * duration + "ms";
-            document.querySelector(".race-car2").style.transitionDuration = (algorithmTimes["insertionSort"].time / 1000) * duration + "ms";
-            document.querySelector(".race-car3").style.transitionDuration = (algorithmTimes["bubbleSort"].time / 1000) * duration + "ms";
-            document.querySelector(".race-car4").style.transitionDuration = (algorithmTimes["selectionSort"].time / 1000) * duration + "ms";
+            document.querySelector(".race-car1").style.transitionDuration = (algorithmTimes["mergeSort"]["time"] / 1000) * duration + "ms";
+            document.querySelector(".race-car2").style.transitionDuration = (algorithmTimes["insertionSort"]["time"] / 1000) * duration + "ms";
+            document.querySelector(".race-car3").style.transitionDuration = (algorithmTimes["bubbleSort"]["time"] / 1000) * duration + "ms";
+            document.querySelector(".race-car4").style.transitionDuration = (algorithmTimes["selectionSort"]["time"] / 1000) * duration + "ms";
 
             document.querySelectorAll('.race-car').forEach(car => car.style.transform = "translateX(970px)");
 
@@ -94,15 +94,12 @@
 
         function updateResultsTable(algorithmTimes) {
             // get the table body
-            const tableBody = document.querySelector('#resultsTable tbody');
-
-            // clear existing rows
-            tableBody.innerHTML = '';
+            const tableBody = document.getElementById('resultsTable');
 
             // add new rows based on algorithmTimes
             for (const method in algorithmTimes) {
-                const time = algorithmTimes[method].time;
-                const iterations = algorithmTimes[method].iterations;
+                const time = algorithmTimes[method]["time"];
+                const iterations = algorithmTimes[method]["iterations"];
                 const complexity = getComplexity(method);
 
                 // create a new row
@@ -130,13 +127,13 @@
 
         function getComplexity(method) {
             switch (method) {
-                case "Merge Sort":
+                case "mergeSort":
                     return "O(n log n)";
-                case "Insertion Sort":
+                case "insertionSort":
                     return "O(n^2)";
-                case "Bubble Sort":
+                case "bubbleSort":
                     return "O(n^2)";
-                case "Selection Sort":
+                case "selectionSort":
                     return "O(n^2)";
                 default:
                     return "";
