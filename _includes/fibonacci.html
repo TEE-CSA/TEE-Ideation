@@ -126,17 +126,12 @@
         function updateResultTable(algorithmTimes) {
             try {
                 const table = document.getElementById("data");
-                table.innerHTML = ''; // Clear previous rows
 
-                Object.keys(algorithmTimes).forEach(method => {
-                    const time = algorithmTimes[method].time;
-                    const iterations = algorithmTimes[method].iterations;
-                    const complexity = getComplexity(method);
-
-                    // Create a new row
-                    const row = table.insertRow();
-                    row.innerHTML = `<td>${method}</td><td>${time} ms</td><td>${iterations}</td><td>${complexity}</td>`;
-                });
+                // Add data rows to the table
+                addRow(table, "For Loop", algorithmTimes["forLoopFibonacci"]);
+                addRow(table, "While Loop", algorithmTimes["whileLoopFibonacci"]);
+                addRow(table, "Recursion", algorithmTimes["recursionFibonacci"]);
+                addRow(table, "Matrix", algorithmTimes["matrixFibonacci"]);
             } catch (error) {
                 console.error('Error updating result table:', error);
             }
