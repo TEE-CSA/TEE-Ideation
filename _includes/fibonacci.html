@@ -79,9 +79,49 @@
             } catch (error) {
                 console.error('Error fetching algorithm times:', error);
             }
+            try {
+                await new Promise(resolve => setTimeout(resolve, Math.max(...Object.values(algorithmTimes)) * 4000));
+                const resultTable = document.createElement("table");
+                resultTable.innerHTML = `
+                    <tr>
+                        <th>Algorithm</th>
+                        <th>Time (ms)</th>
+                        <th>Iterations</th>
+                        <th>Time Complexity</th>
+                    </tr>
+                    <tr>
+                        <td>For Loop</td>
+                        <td>${algorithmTimes["forLoopFibonacci"]["time"]}</td>
+                        <td>${algorithmTimes["forLoopFibonacci"]["iterations"]}</td>
+                        <td>O(n)</td>
+                    </tr>
+                    <tr>
+                        <td>While Loop</td>
+                        <td>${algorithmTimes["whileLoopFibonacci"]["time"]}</td>
+                        <td>${algorithmTimes["whileLoopFibonacci"]["iterations"]}</td>
+                        <td>O(n)</td>
+                    </tr>
+                    <tr>
+                        <td>Recursion</td>
+                        <td>${algorithmTimes["recursionFibonacci"]["time"]}</td>
+                        <td>${algorithmTimes["recursionFibonacci"]["iterations"]}</td>
+                        <td>O(n^2)</td>
+                    </tr>
+                    <tr>
+                        <td>Matrix</td>
+                        <td>${algorithmTimes["matrixFibonacci"]["time"]}</td>
+                        <td>${algorithmTimes["matrixFibonacci"]["iterations"]}</td>
+                        <td>O(log(n))</td>
+                    </tr>
+                `;
+
+                // Append the table to the body or another container
+                document.body.appendChild(resultTable);
+
+            } catch (error) {
+                console.error('Error fetching algorithm times:', error);
+            }
         }
-
-
         function resetRace() {
             document.querySelector(".race-car1").style.transform = "translateX(0)";
             document.querySelector(".race-car2").style.transform = "translateX(0)";
