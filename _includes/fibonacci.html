@@ -51,10 +51,10 @@
 
                 // Calculate the duration for each algorithm
                 const duration = 4000; // 4 seconds for animation
-                const car1Duration = algorithmTimes["forLoopFibonacci"];
-                const car2Duration = algorithmTimes["whileLoopFibonacci"];
-                const car3Duration = algorithmTimes["recursionFibonacci"];
-                const car4Duration = algorithmTimes["matrixFibonacci"];
+                const car1Duration = algorithmTimes["forLoopFibonacci"]["time"];
+                const car2Duration = algorithmTimes["whileLoopFibonacci"]["time"];
+                const car3Duration = algorithmTimes["recursionFibonacci"]["time"];
+                const car4Duration = algorithmTimes["matrixFibonacci"]["time"];
 
                 // Set the animation duration for each car
                 document.querySelector(".race-car1").style.transitionDuration = car1Duration + "ms";
