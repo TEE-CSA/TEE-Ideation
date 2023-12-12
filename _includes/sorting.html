@@ -122,26 +122,17 @@
 
         function updateResultTable(algorithmTimes) {
             try {
-                // Get the table body
-                const tableBody = document.getElementById("data");
+                const table = document.getElementById("resultsTable");
 
-                // Add new rows based on algorithmTimes
-                Object.keys(algorithmTimes).forEach(method => {
-                    const time = algorithmTimes[method].time;
-                    const iterations = algorithmTimes[method].iterations;
-                    const complexity = getComplexity(method);
-
-                    // Create a new row
-                    const row = document.createElement('tr');
-                    row.innerHTML = `<td>${method}</td><td>${time} ms</td><td>${iterations}</td><td>${complexity}</td>`;
-
-                    // Append the row to the table body
-                    tableBody.appendChild(row);
-                });
+                // Add data rows to the table
+                addRow(table, "Bubble Sort", algorithmTimes["bubbleSort"]);
+                addRow(table, "Insertion Sort", algorithmTimes["insertionSort"]);
+                addRow(table, "Merge Sort", algorithmTimes["mergeSort"]);
+                addRow(table, "Selection Sort", algorithmTimes["selectionSort"]);
             } catch (error) {
                 console.error('Error updating result table:', error);
             }
-}
+        }
 
 
         function addRow(table, method, data) {
@@ -159,13 +150,13 @@
 
         function getComplexity(method) {
             switch (method) {
-                case "mergeSort":
+                case "Merge Sort":
                     return "O(n log n)";
-                case "insertionSort":
+                case "Insertion Sort":
                     return "O(n^2)";
-                case "bubbleSort":
+                case "Bubble Sort":
                     return "O(n^2)";
-                case "selectionSort":
+                case "Selection Sort":
                     return "O(n^2)";
                 default:
                     return "";
