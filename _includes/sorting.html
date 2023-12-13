@@ -1,9 +1,9 @@
-<html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
+
 <body>
-    <h1 class="text1">User Score: <span id="userScore">500</span></h1> 
+    <h1 class="text1">User Score: <span id="userScore">500</span></h1>
     <h1 class="text2">Amount Bet: <span id="betAmount">0</span></h1>
 
     <div id="track">
@@ -56,11 +56,14 @@
         let userScore = 500; // Initial user score
         let betAmount = 0; // Initial bet amount
         let resultData; // Store result globally to use in displayRaceResults
-    
+
         async function startSortingRace() {
             const arraySize = document.getElementById('length').value;
             const algorithmTimesResponse = await fetch(`http://localhost:8085/api/sort/speeds?arraySize=${arraySize}`);
             const algorithmTimes = await algorithmTimesResponse.json();
+
+            // Update the table with results
+            updateResultsTable(algorithmTimes);
 
             // Set animation duration for each car based on the algorithm times
             const duration = 4000; // 4 seconds for animation
@@ -75,20 +78,17 @@
             // Display the race result after the longest duration
             setTimeout(() => {
                 // Calculate points won or lost
-                const winLossAmount = betAmount * (result.didUserWin ? 2 : -1);
-                const winLossMessage = result.didUserWin ? `You won ${winLossAmount} points!` : `You lost ${betAmount} points.`;
+                const winLossAmount = betAmount * (resultData.didUserWin ? 2 : -1);
+                const winLossMessage = resultData.didUserWin ? `You won ${winLossAmount} points!` : `You lost ${betAmount} points.`;
 
-                alert(`Race finished! Algorithm Bet on: ${result.selectedAlgorithm}\n` +
-                    `Winning algorithm: ${result.fastestAlgorithm}\n` +
+                alert(`Race finished! Algorithm Bet on: ${resultData.selectedAlgorithm}\n` +
+                    `Winning algorithm: ${resultData.fastestAlgorithm}\n` +
                     winLossMessage +
-                    `Fun Fact: ${result.funFact}`);
+                    `Fun Fact: ${resultData.funFact}`);
 
                 // Update the user's score
                 userScore += winLossAmount;
                 document.getElementById("userScore").textContent = userScore;
-
-                // Update the table with results
-                updateResultsTable(algorithmTimes);
 
             }, Math.max(...Object.values(algorithmTimes).map(algorithm => algorithm.time)) * duration);
         }
@@ -114,43 +114,36 @@
                 tableBody.appendChild(row);
             }
         }
-    
-        function setCarAnimation(algorithmTimes) {
-            const maxAlgorithmTime = Math.max(...Object.values(algorithmTimes));
-            Object.keys(algorithmTimes).forEach((algorithm, index) => {
-                const carElement = document.querySelector(`.race-car${index + 1}`);
-                const duration = (1 - (algorithmTimes[algorithm] / maxAlgorithmTime)) * 4000 + 1000; // Faster algorithms get shorter durations
-                carElement.style.transitionDuration = duration + 'ms';
-                carElement.style.transform = "translateX(970px)";
-            });
+
+
+        function addRow(table, method, data) {
+            const row = table.insertRow();
+            const cell1 = row.insertCell(0);
+            const cell2 = row.insertCell(1);
+            const cell3 = row.insertCell(2);
+            const cell4 = row.insertCell(3);
+
+            cell1.innerHTML = method;
+            cell2.innerHTML = data["time"];
+            cell3.innerHTML = data["iterations"];
+            cell4.innerHTML = getComplexity(method);
         }
-    
-        function waitForTransition(selector) {
-            return new Promise(resolve => {
-                const element = document.querySelector(selector);
-                element.addEventListener('transitionend', resolve, { once: true });
-            });
-        }
-    
-        function displayRaceResults() {
-            if (!resultData) {
-                console.error("No race result data available.");
-                return;
+
+        function getComplexity(method) {
+            switch (method) {
+                case "Merge Sort":
+                    return "O(n log n)";
+                case "Insertion Sort":
+                    return "O(n^2)";
+                case "Bubble Sort":
+                    return "O(n^2)";
+                case "Selection Sort":
+                    return "O(n^2)";
+                default:
+                    return "";
             }
-    
-            const userWon = resultData.selectedAlgorithm === resultData.fastestAlgorithm;
-            const winLossAmount = userWon ? betAmount * 2 : -betAmount;
-            const winLossMessage = userWon ? `You won ${winLossAmount} points!` : `You lost ${betAmount} points.`;
-    
-            alert(`Race finished! Algorithm Bet on: ${resultData.selectedAlgorithm}\n` +
-                `Winning algorithm: ${resultData.fastestAlgorithm}\n` +
-                winLossMessage +
-                `Fun Fact: ${resultData.funFact}`);
-    
-            userScore += winLossAmount;
-            document.getElementById("userScore").textContent = userScore;
         }
-    
+
         function resetRace() {
             document.querySelectorAll('.race-car').forEach(car => car.style.transform = "translateX(0)");
             document.getElementById("betInput").value = '';
@@ -162,21 +155,21 @@
             const tableBody = document.querySelector('#resultsTable tbody');
             tableBody.innerHTML = '';
         }
-    
+
         async function placeBet() {
             const betInputValue = parseInt(document.getElementById("betInput").value);
             if (isNaN(betInputValue) || betInputValue <= 0 || betInputValue > userScore) {
                 alert("Invalid bet amount");
                 return;
             }
-    
+
             betAmount = betInputValue; // Update bet amount
             document.getElementById("betAmount").textContent = betAmount;
-    
+
             const betResponse = await fetch(`http://localhost:8085/api/sort/bet?betAmount=${betAmount}&startingPoints=${userScore}`);
             resultData = await betResponse.json(); // Store result globally
-    
+
             startSortingRace();
         }
     </script>
-    </body>
+</body>
