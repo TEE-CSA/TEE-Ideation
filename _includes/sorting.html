@@ -37,7 +37,7 @@
     <button id="startBtn" onclick="startSortingRace()">Start Race</button>
     <button id="resetBtn" onclick="resetRace()">Reset Race</button>
 
-    <!-- Table to display results -->
+    <!-- table to display results -->
     <table id="resultsTable">
         <thead>
             <tr>
@@ -48,7 +48,7 @@
             </tr>
         </thead>
         <tbody>
-            <!-- Table rows will be added dynamically -->
+            <!-- rows added dynamically -->
         </tbody>
     </table>
 
@@ -62,20 +62,19 @@
             const algorithmTimesResponse = await fetch(`http://localhost:8085/api/sort/speeds?arraySize=${arraySize}`);
             const algorithmTimes = await algorithmTimesResponse.json();
 
-            // Update the table with results
+            // update the table with results
             updateResultsTable(algorithmTimes);
 
-            // Set animation duration for each car based on the algorithm times
+            // set animation duration for each car based on the algorithm times
             const duration = 4000; // 4 seconds for animation
             document.querySelector(".race-car1").style.transitionDuration = (algorithmTimes["mergeSort"].time / 1000) * duration + "ms";
             document.querySelector(".race-car2").style.transitionDuration = (algorithmTimes["insertionSort"].time / 1000) * duration + "ms";
             document.querySelector(".race-car3").style.transitionDuration = (algorithmTimes["bubbleSort"].time / 1000) * duration + "ms";
             document.querySelector(".race-car4").style.transitionDuration = (algorithmTimes["selectionSort"].time / 1000) * duration + "ms";
 
-            // Start race by applying the transform property
             document.querySelectorAll('.race-car').forEach(car => car.style.transform = "translateX(970px)");
 
-            // Display the race result after the longest duration
+            // display race result after the longest duration
             setTimeout(() => {
                 // Calculate points won or lost
                 const winLossAmount = betAmount * (resultData.didUserWin ? 2 : -1);
@@ -94,23 +93,23 @@
         }
 
         function updateResultsTable(algorithmTimes) {
-            // Get the table body
+            // get the table body
             const tableBody = document.querySelector('#resultsTable tbody');
 
-            // Clear existing rows
+            // clear existing rows
             tableBody.innerHTML = '';
 
-            // Add new rows based on algorithmTimes
+            // add new rows based on algorithmTimes
             for (const method in algorithmTimes) {
                 const time = algorithmTimes[method].time;
                 const iterations = algorithmTimes[method].iterations;
                 const complexity = getComplexity(method);
 
-                // Create a new row
+                // create a new row
                 const row = document.createElement('tr');
                 row.innerHTML = `<td>${method}</td><td>${time} ms</td><td>${iterations}</td><td>${complexity}</td>`;
 
-                // Append the row to the table body
+                // append the row to the table body
                 tableBody.appendChild(row);
             }
         }
@@ -151,7 +150,7 @@
             betAmount = 0;
             document.getElementById("betAmount").textContent = betAmount;
 
-            // Clear the table
+            // clear the table
             const tableBody = document.querySelector('#resultsTable tbody');
             tableBody.innerHTML = '';
         }
