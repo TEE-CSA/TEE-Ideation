@@ -102,29 +102,29 @@
         }
 
         function waitForTransition(selector) {
-        return new Promise(resolve => {
-            const element = document.querySelector(selector);
-            element.addEventListener('transitionend', resolve, { once: true });
-        });
-    }
-
-        function displayRaceResults() {
-            // Calculate points won or lost
-            const userWon = resultData.selectedAlgorithm === resultData.fastestAlgorithm;
-            const winLossAmount = userWon ? betAmount * 2 : -betAmount;
-            userScore += winLossAmount; // Update score immediately
-
-            const winLossMessage = userWon ? `You won ${winLossAmount} points!` : `You lost ${betAmount} points.`;
-            
-            alert(`Race finished! Algorithm Bet on: ${resultData.selectedAlgorithm}\n` +
-                `Winning algorithm: ${resultData.fastestAlgorithm}\n` +
-                winLossMessage +
-                `Fun Fact: ${resultData.funFact}`);
-            
-            // Update the user's score
-            document.getElementById("userScore").textContent = userScore;
-            raceInProgress = false;
+            return new Promise(resolve => {
+                const element = document.querySelector(selector);
+                element.addEventListener('transitionend', resolve, { once: true });
+            });
         }
+    
+            function displayRaceResults() {
+                // Calculate points won or lost
+                const userWon = resultData.selectedAlgorithm === resultData.fastestAlgorithm;
+                const winLossAmount = userWon ? betAmount * 2 : -betAmount;
+                userScore += winLossAmount; // Update score immediately
+    
+                const winLossMessage = userWon ? `You won ${winLossAmount} points!` : `You lost ${betAmount} points.`;
+    
+                alert(`Race finished! Algorithm Bet on: ${resultData.selectedAlgorithm}\n` +
+                    `Winning algorithm: ${resultData.fastestAlgorithm}\n` +
+                    winLossMessage +
+                    `Fun Fact: ${resultData.funFact}`);
+    
+                // Update the user's score
+                document.getElementById("userScore").textContent = userScore;
+                raceInProgress = false;
+            }
 
         function updateResultTable(algorithmTimes) {
             try {
