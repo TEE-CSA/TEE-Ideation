@@ -118,9 +118,7 @@
             cell3.innerHTML = data["iterations"];
             cell4.innerHTML = getComplexity(method);
         }
-        
         function getComplexity(method) {
-            // You can customize this function to return the time complexity based on the method
             switch (method) {
                 case "For Loop":
                 case "While Loop":
@@ -133,7 +131,6 @@
                     return "";
             }
         }
-        
         function resetRace() {
             document.querySelector(".race-car1").style.transform = "translateX(0)";
             document.querySelector(".race-car2").style.transform = "translateX(0)";
