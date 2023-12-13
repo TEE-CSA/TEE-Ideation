@@ -62,35 +62,63 @@
             const algorithmTimesResponse = await fetch(`http://localhost:8085/api/sort/speeds?arraySize=${arraySize}`);
             const algorithmTimes = await algorithmTimesResponse.json();
 
+            setCarAnimation(algorithmTimes);
+
             // update the table with results
             updateResultsTable(algorithmTimes);
 
-            // set animation duration for each car based on the algorithm times
-            const duration = 4000; // 4 seconds for animation
-            document.querySelector(".race-car1").style.transitionDuration = (algorithmTimes["mergeSort"]["time"] / 1000) * duration + "ms";
-            document.querySelector(".race-car2").style.transitionDuration = (algorithmTimes["insertionSort"]["time"] / 1000) * duration + "ms";
-            document.querySelector(".race-car3").style.transitionDuration = (algorithmTimes["bubbleSort"]["time"] / 1000) * duration + "ms";
-            document.querySelector(".race-car4").style.transitionDuration = (algorithmTimes["selectionSort"]["time"] / 1000) * duration + "ms";
+            // Wait for all car animations to complete before showing the results
+            await Promise.all([
+                waitForTransition('.race-car1'),
+                waitForTransition('.race-car2'),
+                waitForTransition('.race-car3'),
+                waitForTransition('.race-car4')
+            ]);
 
-            document.querySelectorAll('.race-car').forEach(car => car.style.transform = "translateX(970px)");
-
-            // display race result after the longest duration
-            setTimeout(() => {
-                // Calculate points won or lost
-                const winLossAmount = betAmount * (resultData.didUserWin ? 2 : -1);
-                const winLossMessage = resultData.didUserWin ? `You won ${winLossAmount} points!` : `You lost ${betAmount} points.`;
-
-                alert(`Race finished! Algorithm Bet on: ${resultData.selectedAlgorithm}\n` +
-                    `Winning algorithm: ${resultData.fastestAlgorithm}\n` +
-                    winLossMessage +
-                    `Fun Fact: ${resultData.funFact}`);
-
-                // Update the user's score
-                userScore += winLossAmount;
-                document.getElementById("userScore").textContent = userScore;
-
-            }, Math.max(...Object.values(algorithmTimes).map(algorithm => algorithm.time)) * duration);
+            displayRaceResults();
         }
+
+        function setCarAnimation(algorithmTimes) {
+            const minTime = Math.min(...Object.values(algorithmTimes).map(a => a.time));
+            Object.keys(algorithmTimes).forEach((algorithm, index) => {
+                const carElement = document.querySelector(`.race-car${index + 1}`);
+                const time = algorithmTimes[algorithm].time;
+                // Faster algorithms have shorter durations
+                const duration = ((minTime / time) * 5000) + 1000; // Ensuring a minimum duration for visibility
+                carElement.style.transitionDuration = duration + 'ms';
+                carElement.style.transform = "translateX(970px)";
+            });
+        }
+
+        function waitForTransition(selector) {
+            return new Promise(resolve => {
+                const element = document.querySelector(selector);
+                element.addEventListener('transitionend', resolve, { once: true });
+            });
+        }
+
+        function displayRaceResults() {
+            if (!resultData) {
+                console.error("No race result data available.");
+                return;
+            }
+
+            const userWon = resultData.selectedAlgorithm === resultData.fastestAlgorithm;
+            const winLossAmount = userWon ? betAmount * 2 : -betAmount;
+            const winLossMessage = userWon ? `You won ${winLossAmount} points!` : `You lost ${betAmount} points.`;
+    
+            alert(`Race finished! Algorithm Bet on: ${resultData.selectedAlgorithm}\n` +
+                `Winning algorithm: ${resultData.fastestAlgorithm}\n` +
+                winLossMessage +
+                `Fun Fact: ${resultData.funFact}`);
+    
+            userScore += winLossAmount;
+            document.getElementById("userScore").textContent = userScore;
+        }
+    
+
+        
+    
 
         function updateResultsTable(algorithmTimes) {
             // get the table body
@@ -146,6 +174,7 @@
             document.getElementById("length").value = '1';
             betAmount = 0;
             document.getElementById("betAmount").textContent = betAmount;
+            resultData = null;
 
             // clear the table
             const tableBody = document.querySelector('#resultsTable tbody');
