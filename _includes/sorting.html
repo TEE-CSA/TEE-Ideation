@@ -120,24 +120,29 @@
         
     
 
-        function updateResultsTable(algorithmTimes) {
-            // get the table body
-            const tableBody = document.getElementById('resultsTable');
+        function updateResultTable(algorithmTimes) {
+            try {
+                // Get the table body
+                const tableBody = document.getElementById("data");
+                tableBody.innerHTML = '';
 
-            // add new rows based on algorithmTimes
-            for (const method in algorithmTimes) {
-                const time = algorithmTimes[method]["time"];
-                const iterations = algorithmTimes[method]["iterations"];
-                const complexity = getComplexity(method);
+                // Add new rows based on algorithmTimes
+                Object.keys(algorithmTimes).forEach(method => {
+                    const time = algorithmTimes[method].time;
+                    const iterations = algorithmTimes[method].iterations;
+                    const complexity = getComplexity(method);
 
-                // create a new row
-                const row = document.createElement('tr');
-                row.innerHTML = `<td>${method}</td><td>${time} ms</td><td>${iterations}</td><td>${complexity}</td>`;
+                    // Create a new row
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td>${method}</td><td>${time} ms</td><td>${iterations}</td><td>${complexity}</td>`;
 
-                // append the row to the table body
-                tableBody.appendChild(row);
+                    // Append the row to the table body
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error updating result table:', error);
             }
-        }
+}
 
 
         function addRow(table, method, data) {

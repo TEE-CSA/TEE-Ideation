@@ -60,11 +60,11 @@
                 const response = await fetch(`http://localhost:8085/api/fibonacci/speeds?length=${length}`);
                 const algorithmTimes = await response.json();
 
+                updateResultTable(algorithmTimes);
 
                 setCarAnimation(algorithmTimes);
 
                 
-                updateResultTable(algorithmTimes);
 
                 await Promise.all([
                     waitForTransition('.race-car1'),
