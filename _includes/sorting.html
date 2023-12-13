@@ -39,64 +39,83 @@
     <script>
         let userScore = 500; // Initial user score
         let betAmount = 0; // Initial bet amount
-
-        // This function needs to be defined to accept a parameter that holds the result
-        async function startSortingRace(result) {
-            // Fetch algorithm times based on array size
+        let resultData; // Store result globally to use in displayRaceResults
+    
+        async function startSortingRace() {
             const arraySize = document.getElementById('length').value;
             const algorithmTimesResponse = await fetch(`http://localhost:8085/api/sort/speeds?arraySize=${arraySize}`);
             const algorithmTimes = await algorithmTimesResponse.json();
-
-            // Set animation duration for each car based on the algorithm times
-            const duration = 4000; // 4 seconds for animation
-            document.querySelector(".race-car1").style.transitionDuration = (algorithmTimes["mergeSort"] / 1000) * duration + "ms";
-            document.querySelector(".race-car2").style.transitionDuration = (algorithmTimes["insertionSort"] / 1000) * duration + "ms";
-            document.querySelector(".race-car3").style.transitionDuration = (algorithmTimes["bubbleSort"] / 1000) * duration + "ms";
-            document.querySelector(".race-car4").style.transitionDuration = (algorithmTimes["selectionSort"] / 1000) * duration + "ms";
-
-            // Start race by applying the transform property
-            document.querySelectorAll('.race-car').forEach(car => car.style.transform = "translateX(970px)");
-
-            // Display the race result after the longest duration
-            setTimeout(() => {
-                // Calculate points won or lost
-                const winLossAmount = betAmount * (result.didUserWin ? 2 : -1);
-                const winLossMessage = result.didUserWin ? `You won ${winLossAmount} points!` : `You lost ${betAmount} points.`;
-
-                alert(`Race finished! Algorithm Bet on: ${result.selectedAlgorithm}\n` +
-                    `Winning algorithm: ${result.fastestAlgorithm}\n` +
-                    winLossMessage +
-                    `Fun Fact: ${result.funFact}`);
-
-                // Update the user's score
-                userScore += winLossAmount;
-                document.getElementById("userScore").textContent = userScore;
-            }, Math.max(...Object.values(algorithmTimes)) * duration);
+    
+            setCarAnimation(algorithmTimes);
+    
+            // Wait for all animations to complete
+            Promise.all([
+                waitForTransition('.race-car1'),
+                waitForTransition('.race-car2'),
+                waitForTransition('.race-car3'),
+                waitForTransition('.race-car4')
+            ]).then(displayRaceResults);
         }
-
+    
+        function setCarAnimation(algorithmTimes) {
+            const maxAlgorithmTime = Math.max(...Object.values(algorithmTimes));
+            Object.keys(algorithmTimes).forEach((algorithm, index) => {
+                const carElement = document.querySelector(`.race-car${index + 1}`);
+                const duration = (1 - (algorithmTimes[algorithm] / maxAlgorithmTime)) * 4000 + 1000; // Faster algorithms get shorter durations
+                carElement.style.transitionDuration = duration + 'ms';
+                carElement.style.transform = "translateX(970px)";
+            });
+        }
+    
+        function waitForTransition(selector) {
+            return new Promise(resolve => {
+                const element = document.querySelector(selector);
+                element.addEventListener('transitionend', resolve, { once: true });
+            });
+        }
+    
+        function displayRaceResults() {
+            if (!resultData) {
+                console.error("No race result data available.");
+                return;
+            }
+    
+            const userWon = resultData.selectedAlgorithm === resultData.fastestAlgorithm;
+            const winLossAmount = userWon ? betAmount * 2 : -betAmount;
+            const winLossMessage = userWon ? `You won ${winLossAmount} points!` : `You lost ${betAmount} points.`;
+    
+            alert(`Race finished! Algorithm Bet on: ${resultData.selectedAlgorithm}\n` +
+                `Winning algorithm: ${resultData.fastestAlgorithm}\n` +
+                winLossMessage +
+                `Fun Fact: ${resultData.funFact}`);
+    
+            userScore += winLossAmount;
+            document.getElementById("userScore").textContent = userScore;
+        }
+    
         function resetRace() {
-            // Reset race and input fields
             document.querySelectorAll('.race-car').forEach(car => car.style.transform = "translateX(0)");
             document.getElementById("betInput").value = '';
             document.getElementById("length").value = '1';
             betAmount = 0;
             document.getElementById("betAmount").textContent = betAmount;
+            resultData = null; // Reset result data
         }
-
+    
         async function placeBet() {
             const betInputValue = parseInt(document.getElementById("betInput").value);
             if (isNaN(betInputValue) || betInputValue <= 0 || betInputValue > userScore) {
                 alert("Invalid bet amount");
                 return;
             }
-
+    
             betAmount = betInputValue; // Update bet amount
             document.getElementById("betAmount").textContent = betAmount;
-
+    
             const betResponse = await fetch(`http://localhost:8085/api/sort/bet?betAmount=${betAmount}&startingPoints=${userScore}`);
-            const result = await betResponse.json();
-
-            startSortingRace(result); // Pass the result to the race function
+            resultData = await betResponse.json(); // Store result globally
+    
+            startSortingRace();
         }
-</script>
+    </script>
     </body>
