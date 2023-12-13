@@ -53,7 +53,7 @@
                 <th>Time Complexity</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="results">
             <!-- rows added dynamically -->
         </tbody>
     </table>
@@ -102,7 +102,7 @@
         }
         function updateResultTable(algorithmTimes) {
             try {
-                const table = document.getElementById("resultsTable");
+                const table = document.getElementById("results");
 
                 // Add data rows to the table
                 addRow(table, "Merge Sort", algorithmTimes["mergeSort"]);
@@ -147,7 +147,7 @@
             document.getElementById("betAmount").textContent = betAmount;
 
             // clear the table
-            const tableBody = document.querySelector('#resultsTable tbody');
+            const tableBody = document.getElementById('results');
             tableBody.innerHTML = '';
         }
 
@@ -161,7 +161,6 @@
             document.getElementById("betAmount").textContent = betAmount;
             const betResponse = await fetch(`http://localhost:8085/api/sort/bet?betAmount=${betAmount}&startingPoints=${userScore}`);
             resultData = await betResponse.json(); // Store result globally
-            startSortingRace();
         }
     </script>
 </body>

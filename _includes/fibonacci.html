@@ -40,12 +40,17 @@
     <br>
     <br> 
     <table id="data">
-        <tr>
-            <th>Method</th>
-            <th>Time</th>
-            <th>Iterations</th>
-            <th>Time Complexity</th>
-        </tr>
+        <thead>
+            <tr>
+                <th>Method</th>
+                <th>Time</th>
+                <th>Iterations</th>
+                <th>Time Complexity</th>
+            </tr>
+        </thead>
+        <tbody id="results">
+            <!-- results generated -->
+        </tbody>
     </table>
 
     <script>
@@ -125,7 +130,7 @@
 
         function updateResultTable(algorithmTimes) {
             try {
-                const table = document.getElementById("data");
+                const table = document.getElementById("results");
 
                 // Add data rows to the table
                 addRow(table, "Matrix", algorithmTimes["matrixFibonacci"]);
@@ -175,7 +180,7 @@
             raceResultFib = null; // Clear stored race results
 
             // Clear the table
-            const table = document.getElementById("data");
+            const table = document.getElementById("results");
             table.innerHTML = '';
 }
 
