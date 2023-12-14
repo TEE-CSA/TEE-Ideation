@@ -113,20 +113,32 @@
                 return;
             }
 
-            const userWon = raceResultFib.selectedAlgorithm === raceResultFib.fastestAlgorithm;
+            const fastestAlgorithm = findFastestAlgorithm(raceResultFib);
+            const userWon = raceResultFib.selectedAlgorithm === fastestAlgorithm;
             const winLossAmount = userWon ? betAmountFib * 2 : -betAmountFib;
             const winLossMessage = userWon ? `You won ${winLossAmount} points!` : `You lost ${betAmountFib} points.`;
 
             alert(`Race finished! Algorithm Bet on: ${raceResultFib.selectedAlgorithm}\n` +
-                `Winning algorithm: ${raceResultFib.fastestAlgorithm}\n` +
+                `Winning algorithm: ${fastestAlgorithm}\n` +
                 winLossMessage +
                 `Fun Fact: ${raceResultFib.funFact}`);
 
             userScoreFib += winLossAmount;
             document.getElementById("userScoreFib").textContent = userScoreFib;
-}
+        }
 
+        function findFastestAlgorithm(resultFib) {
+            const times = Object.values(resultFib.algorithmTimes).map(a => a.time);
+            const minTime = Math.min(...times);
 
+            for (const [algorithm, data] of Object.entries(resultFib.algorithmTimes)) {
+                if (data.time === minTime) {
+                    return algorithm;
+                }
+            }
+
+            return null;
+        }
 
         function updateResultTable(algorithmTimes) {
             try {
