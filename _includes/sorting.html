@@ -5,23 +5,30 @@
 <body>
     <h1 class="text1">User Score: <span id="userScore">500</span></h1>
     <h1 class="text2">Amount Bet: <span id="betAmount">0</span></h1>
-
     <div id="track">
         <div class="lane">
             <span class="car-label" id="carLabel1">Merge Sort</span>
-            <img class="race-car1" src="https://github.com/TEE-CSA/TEEBackend/assets/109186517/0fe7001f-0d2e-40fc-bdd1-9b82373862f5" alt="Car 1">
+            <img class="race-car race-car1"
+                src="https://github.com/TEE-CSA/TEEBackend/assets/109186517/0fe7001f-0d2e-40fc-bdd1-9b82373862f5"
+                alt="Car 1">
         </div>
         <div class="lane" style="top: 25%;">
             <span class="car-label" id="carLabel2">Insertion Sort</span>
-            <img class="race-car2" src="https://github.com/TEE-CSA/TEEBackend/assets/109186517/6d9bc8e3-8c8e-4854-8194-0b5fdacad24b" alt="Car 2">
+            <img class="race-car race-car2"
+                src="https://github.com/TEE-CSA/TEEBackend/assets/109186517/6d9bc8e3-8c8e-4854-8194-0b5fdacad24b"
+                alt="Car 2">
         </div>
         <div class="lane" style="top: 50%;">
             <span class="car-label" id="carLabel3">Bubble Sort</span>
-            <img class="race-car3" src="https://github.com/TEE-CSA/TEEBackend/assets/109186517/3976c85c-ae57-43a0-9331-1e10bf51d29f" alt="Car 3">
+            <img class="race-car race-car3"
+                src="https://github.com/TEE-CSA/TEEBackend/assets/109186517/3976c85c-ae57-43a0-9331-1e10bf51d29f"
+                alt="Car 3">
         </div>
         <div class="lane1" style="top: 75%">
             <span class="car-label" id="carLabel4">Selection Sort</span>
-            <img class="race-car4" src="https://github.com/TEE-CSA/TEEBackend/assets/109186517/7ad3a783-5957-4979-81c0-33619a9b4ef4" alt="Car 4">
+            <img class="race-car race-car4"
+                src="https://github.com/TEE-CSA/TEEBackend/assets/109186517/7ad3a783-5957-4979-81c0-33619a9b4ef4"
+                alt="Car 4">
         </div>
         <div class="finish">
             <span class="finish-text">Finish</span>
@@ -31,7 +38,6 @@
         <label for="length">Length of Sorting Array</label>
         <input type="number" id="length" min="1" value="1">
     </form>
-
     <input type="number" id="betInput" placeholder="Enter bet amount" />
     <button id="betBtn" onclick="placeBet()">Place Bet</button>
     <button id="startBtn" onclick="startSortingRace()">Start Race</button>
@@ -62,64 +68,38 @@
             const algorithmTimesResponse = await fetch(`http://localhost:8085/api/sort/speeds?arraySize=${arraySize}`);
             const algorithmTimes = await algorithmTimesResponse.json();
 
-            setCarAnimation(algorithmTimes);
-
             // update the table with results
             updateResultTable(algorithmTimes);
 
-            // Wait for all car animations to complete before showing the results
-            await Promise.all([
-                waitForTransition('.race-car1'),
-                waitForTransition('.race-car2'),
-                waitForTransition('.race-car3'),
-                waitForTransition('.race-car4')
-            ]);
+            // set animation duration for each car based on the algorithm times
+            const duration = 4000; // 4 seconds for animation
+            document.querySelector(".race-car1").style.transitionDuration =
+                (algorithmTimes["mergeSort"].time / 1000) * duration + "ms";
+            document.querySelector(".race-car2").style.transitionDuration =
+                (algorithmTimes["insertionSort"].time / 1000) * duration + "ms";
+            document.querySelector(".race-car3").style.transitionDuration =
+                (algorithmTimes["bubbleSort"].time / 1000) * duration + "ms";
+            document.querySelector(".race-car4").style.transitionDuration =
+                (algorithmTimes["selectionSort"].time / 1000) * duration + "ms";
 
-            displayRaceResults();
+            document.querySelectorAll('.race-car').forEach(car => car.style.transform = "translateX(970px)");
+
+            // display race result after the longest duration
+            setTimeout(() => {
+                // Calculate points won or lost
+                const winLossAmount = betAmount * (resultData.didUserWin ? 2 : -1);
+
+                const winLossMessage = resultData.didUserWin ? `You won ${winLossAmount} points!` :
+                    `You lost ${betAmount} points.`;
+                alert(`Race finished! Algorithm Bet on: ${resultData.selectedAlgorithm}\n` +
+                    `Winning algorithm: ${resultData.fastestAlgorithm}\n` +
+                    winLossMessage +
+                    `Fun Fact: ${resultData.funFact}`);
+                // Update the user's score
+                userScore += winLossAmount;
+                document.getElementById("userScore").textContent = userScore;
+            }, Math.max(...Object.values(algorithmTimes).map(algorithm => algorithm.time)) * duration);
         }
-
-        function setCarAnimation(algorithmTimes) {
-            const minTime = Math.min(...Object.values(algorithmTimes).map(a => a.time));
-            Object.keys(algorithmTimes).forEach((algorithm, index) => {
-                const carElement = document.querySelector(`.race-car${index + 1}`);
-                const time = algorithmTimes[algorithm].time;
-                // Faster algorithms have shorter durations
-                const duration = ((minTime / time) * 5000) + 1000; // Ensuring a minimum duration for visibility
-                carElement.style.transitionDuration = duration + 'ms';
-                carElement.style.transform = "translateX(970px)";
-            });
-        }
-
-        function waitForTransition(selector) {
-            return new Promise(resolve => {
-                const element = document.querySelector(selector);
-                element.addEventListener('transitionend', resolve, { once: true });
-            });
-        }
-
-        function displayRaceResults() {
-            if (!resultData) {
-                console.error("No race result data available.");
-                return;
-            }
-
-            const userWon = resultData.selectedAlgorithm === resultData.fastestAlgorithm;
-            const winLossAmount = userWon ? betAmount * 2 : -betAmount;
-            const winLossMessage = userWon ? `You won ${winLossAmount} points!` : `You lost ${betAmount} points.`;
-    
-            alert(`Race finished! Algorithm Bet on: ${resultData.selectedAlgorithm}\n` +
-                `Winning algorithm: ${resultData.fastestAlgorithm}\n` +
-                winLossMessage +
-                `Fun Fact: ${resultData.funFact}`);
-    
-            userScore += winLossAmount;
-            document.getElementById("userScore").textContent = userScore;
-        }
-    
-
-        
-    
-
         function updateResultTable(algorithmTimes) {
             try {
                 const table = document.getElementById("resultsTable");
@@ -133,8 +113,6 @@
                 console.error('Error updating result table:', error);
             }
         }
-
-
         function addRow(table, method, data) {
             const row = table.insertRow();
             const cell1 = row.insertCell(0);
@@ -147,7 +125,6 @@
             cell3.innerHTML = data["iterations"];
             cell4.innerHTML = getComplexity(method);
         }
-
         function getComplexity(method) {
             switch (method) {
                 case "Merge Sort":
@@ -162,14 +139,12 @@
                     return "";
             }
         }
-
         function resetRace() {
             document.querySelectorAll('.race-car').forEach(car => car.style.transform = "translateX(0)");
             document.getElementById("betInput").value = '';
             document.getElementById("length").value = '1';
             betAmount = 0;
             document.getElementById("betAmount").textContent = betAmount;
-            resultData = null;
 
             // clear the table
             const tableBody = document.querySelector('#resultsTable tbody');
@@ -182,12 +157,11 @@
                 alert("Invalid bet amount");
                 return;
             }
-
             betAmount = betInputValue; // Update bet amount
             document.getElementById("betAmount").textContent = betAmount;
-
             const betResponse = await fetch(`http://localhost:8085/api/sort/bet?betAmount=${betAmount}&startingPoints=${userScore}`);
             resultData = await betResponse.json(); // Store result globally
+            startSortingRace();
         }
     </script>
 </body>
